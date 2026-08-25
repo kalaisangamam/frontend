@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      /* Prevent the browser's default body margin from flashing before the
+         stylesheet bundle has loaded. */
+      html, body, #root { min-height: 100%; }
+      html, body { margin: 0; overflow-x: clip; }
+    </style>
+    <title>Kalai Sangamam — Dindigul | Silambam, Karate, Yoga, Skating, Archery, Hindi</title>
+    <meta name="description" content="Kalai Sangamam, Dindigul — professional training academy for Silambam, Karate, Yoga, Skating, Archery and Hindi, guided by experienced masters across 15+ schools." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <script>
+      (function () {
+        try {
+          var root = document.documentElement;
+          var theme = localStorage.getItem('ks-theme');
+          var isLight = theme ? theme === 'light' : !window.matchMedia('(prefers-color-scheme: dark)').matches;
+          root.classList.toggle('light', isLight);
+          root.style.colorScheme = isLight ? 'light' : 'dark';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-ink-950">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,392 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ---------------------------------------------------------------------
+     Theme tokens
+     -------------------------------------------------------------------
+     Every color in tailwind.config.js reads from these CSS variables, so
+     toggling the `light` class on <html> re-themes the whole app without
+     touching individual components. Values are "R G B" triplets so Tailwind
+     can apply opacity modifiers (e.g. bg-ink-900/80).
+  --------------------------------------------------------------------- */
+  :root {
+    /* Imperial dark: deep charcoal surfaces, never pure black. */
+    --color-ink-950: 18 18 16;   /* #121210 page canvas */
+    --color-ink-900: 28 28 26;   /* #1C1C1A card surface */
+    --color-ink-800: 38 37 34;   /* #262522 elevated surface */
+    --color-ink-700: 48 47 43;   /* #302F2B borders / dividers */
+
+    --color-brass-200: 239 221 166;
+    --color-brass-300: 220 190 101;
+    --color-brass-400: 211 174 63;
+    --color-brass-500: 197 155 39;  /* #C59B27 Imperial Gold */
+    --color-brass-600: 164 127 30;  /* #A47F1E gold hover */
+
+    --color-maroon-300: 201 118 134; /* #C97686 */
+    --color-maroon-400: 168 70 90;   /* #A8465A */
+    --color-maroon-500: 133 43 56;   /* #852B38 */
+    --color-maroon-600: 97 32 43;    /* #61202B */
+
+    --color-parchment-100: 245 244 240; /* #F5F4F0 primary text on dark */
+    --color-parchment-200: 222 220 213;
+    --color-parchment-300: 161 158 149; /* #A19E95 secondary text */
+
+    --color-slate-300: 166 171 184; /* #A6ABB8 */
+    --color-slate-400: 141 148 165; /* #8D94A5 */
+    --color-slate-500: 118 122 141; /* #767A8D */
+    --color-slate-600: 92 96 114;   /* #5C6072 */
+
+    /* Body background gradient stops */
+    --bg-glow: 197 155 39;
+    --bg-1: 18 18 16;
+    --bg-2: 23 23 20;
+    --bg-3: 18 18 16;
+    --bg-4: 23 23 20;
+    --bg-5: 18 18 16;
+
+    /* Masters cards: a more composed editorial surface than generic cards. */
+    --master-card-top: 25 20 15;
+    --master-card-bottom: 10 8 6;
+    --master-stat: 31 25 19;
+    --master-overlay: 10 8 6;
+
+    color-scheme: dark;
+  }
+
+  html.light {
+    /* Premium public light: warm, quiet and editorial. */
+    --color-ink-950: 252 251 247; /* #FCFBF7 page canvas */
+    --color-ink-900: 255 255 255; /* #FFFFFF card surface */
+    --color-ink-800: 244 240 230; /* #F4F0E6 elevated surface */
+    --color-ink-700: 231 226 215; /* #E7E2D7 borders / dividers */
+
+    /* Light-mode brass values are deliberately deeper than their dark-mode
+       counterparts: gold is used for labels and links as well as decoration. */
+    --color-brass-200: 229 207 143; /* #E5CF8F */
+    --color-brass-300: 199 161 58;  /* #C7A13A */
+    --color-brass-400: 145 100 0;   /* #916400 — accessible gold text */
+    --color-brass-500: 155 109 5;   /* #9B6D05 — primary brand gold */
+    --color-brass-600: 126 86 0;    /* #7E5600 — hover / deep gold */
+
+    --color-maroon-300: 196 108 122; /* #C46C7A */
+    --color-maroon-400: 163 61 79;   /* #A33D4F */
+    --color-maroon-500: 133 43 56;   /* #852B38 (kept — reads fine on light bg) */
+    --color-maroon-600: 97 32 43;    /* #61202B */
+
+    --color-parchment-100: 28 28 28;  /* #1C1C1C primary text on light */
+    --color-parchment-200: 53 51 47;
+    --color-parchment-300: 94 91 84;  /* #5E5B54 secondary text */
+
+    --color-slate-300: 90 96 112;  /* #5A6070 */
+    --color-slate-400: 74 79 94;   /* #4A4F5E */
+    --color-slate-500: 58 62 75;   /* #3A3E4B */
+    --color-slate-600: 45 48 59;   /* #2D303B */
+
+    --bg-glow: 197 155 39;
+    --bg-1: 252 251 247;
+    --bg-2: 248 246 240;
+    --bg-3: 252 251 247;
+    --bg-4: 248 246 240;
+    --bg-5: 252 251 247;
+
+    --master-card-top: 255 253 249;
+    --master-card-bottom: 248 242 232;
+    --master-stat: 251 247 239;
+    --master-overlay: 250 246 240;
+
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    min-height: 100%;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  html, body, #root {
+    min-height: 100%;
+  }
+  body {
+    @apply text-parchment-100 font-body antialiased transition-colors duration-300;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 70% 18%, rgb(var(--bg-glow) / 0.16), transparent 38%),
+      linear-gradient(135deg, rgb(var(--bg-1)) 0%, rgb(var(--bg-2)) 30%, rgb(var(--bg-3)) 55%, rgb(var(--bg-4)) 78%, rgb(var(--bg-5)) 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-x: clip;
+    overflow-wrap: break-word;
+  }
+  #root {
+    min-height: 100vh;
+    background: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold tracking-tight text-parchment-100;
+  }
+
+  img, svg, video, canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    @apply bg-brass-500 text-onaccent;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C89B3C;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .container-xl {
+    @apply w-full max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply text-brass-400 font-body text-[0.72rem] font-bold tracking-[0.14em] uppercase sm:text-sm sm:tracking-[0.16em];
+  }
+
+  .section-heading {
+    @apply text-[clamp(1.9rem,5vw,4.25rem)] leading-[1] font-display font-bold text-parchment-100;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-10 items-center justify-center gap-1.5 px-4 py-2.5 bg-brass-500 text-onaccent font-body font-bold uppercase tracking-[0.06em] text-[0.68rem] rounded-md shadow-[0_16px_40px_-18px_rgba(232,133,50,0.8)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-brass-600 hover:shadow-[0_20px_42px_-18px_rgba(126,86,0,0.48)] disabled:pointer-events-none disabled:opacity-60 sm:min-h-11 sm:gap-2 sm:px-6 sm:py-3 sm:text-xs sm:tracking-[0.08em];
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-10 items-center justify-center gap-1.5 px-4 py-2.5 border border-brass-500/45 text-parchment-100 font-body font-bold uppercase tracking-[0.06em] text-[0.68rem] rounded-md hover:-translate-y-0.5 hover:border-brass-400 hover:text-brass-400 disabled:pointer-events-none disabled:opacity-60 transition-all duration-200 sm:min-h-11 sm:gap-2 sm:px-6 sm:py-3 sm:text-xs sm:tracking-[0.08em];
+    background: rgb(var(--color-parchment-100) / 0.03);
+    backdrop-filter: blur(12px);
+  }
+
+  .gradient-text {
+    color: rgb(var(--color-brass-400));
+  }
+
+  .card {
+    @apply bg-ink-900/90 border border-parchment-100/10 rounded-2xl transition-colors duration-300;
+  }
+
+  .master-card {
+    @apply relative overflow-hidden rounded-2xl border border-parchment-100/15 transition-all duration-300;
+    background: linear-gradient(155deg, rgb(var(--master-card-top)) 0%, rgb(var(--master-card-bottom)) 100%);
+    box-shadow: 0 18px 50px -28px rgb(0 0 0 / 0.52);
+  }
+
+  .master-card:hover {
+    @apply -translate-y-1 border-brass-500/45;
+    box-shadow: 0 28px 65px -24px rgb(var(--color-brass-500) / 0.28);
+  }
+
+  html.light .master-card {
+    box-shadow: 0 18px 40px -24px rgb(61 42 20 / 0.2);
+  }
+
+  .master-card-photo {
+    background: linear-gradient(145deg, rgb(var(--color-ink-800)) 0%, rgb(var(--color-ink-950)) 100%);
+  }
+
+  .master-card--programme {
+    min-height: 12rem;
+  }
+
+  .master-card-photo-overlay {
+    background: linear-gradient(to top, rgb(var(--master-overlay) / 0.96) 0%, rgb(var(--master-overlay) / 0.22) 44%, transparent 75%);
+  }
+
+  .master-card-role {
+    @apply border border-brass-500/45 px-3 py-1 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-brass-400 backdrop-blur-sm;
+    background: rgb(var(--master-card-bottom) / 0.82);
+  }
+
+  .master-card-stat {
+    @apply rounded-lg border border-parchment-100/15 px-3 py-2.5;
+    background: rgb(var(--master-stat));
+  }
+
+  .gallery-preview-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(0.6rem, 1vw, 1rem);
+    height: clamp(19rem, 32vw, 34rem);
+  }
+
+  .gallery-preview__large,
+  .gallery-preview__mediums,
+  .gallery-preview__smalls {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .gallery-preview__mediums {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.6rem, 1vw, 1rem);
+  }
+
+  .gallery-preview__smalls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.6rem, 1vw, 1rem);
+  }
+
+  @media (max-width: 639px) {
+    .gallery-preview-grid {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+      gap: 0.65rem;
+    }
+
+    .gallery-preview__large {
+      aspect-ratio: 16 / 9;
+    }
+
+    .gallery-preview__mediums,
+    .gallery-preview__smalls {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
+      grid-auto-rows: clamp(4.75rem, 24vw, 6.5rem);
+      gap: 0.65rem;
+    }
+  }
+
+  /* Shared form treatment: applies to every admin and student form, including
+     fields rendered by the reusable admin CRUD page. */
+  form input:not([type='checkbox']):not([type='radio']):not([type='file']),
+  form select,
+  form textarea {
+    @apply w-full rounded-xl border border-parchment-100/10 bg-ink-950/80 px-4 py-3 text-sm text-parchment-100 shadow-inner shadow-black/20 outline-none transition duration-200;
+  }
+
+  form input:not([type='checkbox']):not([type='radio']):not([type='file']):hover,
+  form select:hover,
+  form textarea:hover {
+    @apply border-parchment-100/20;
+  }
+
+  form input:not([type='checkbox']):not([type='radio']):not([type='file']):focus,
+  form select:focus,
+  form textarea:focus {
+    @apply border-brass-500 bg-ink-950 ring-2 ring-brass-500/15;
+  }
+
+  form input::placeholder,
+  form textarea::placeholder {
+    @apply text-slate-500;
+  }
+
+  form select {
+    @apply cursor-pointer;
+  }
+
+  form input[type='file'] {
+    @apply w-full cursor-pointer rounded-xl border border-dashed border-parchment-100/20 bg-ink-950/50 p-2 text-sm text-slate-400 transition hover:border-brass-500/60;
+  }
+
+  form input[type='file']::file-selector-button {
+    @apply mr-3 cursor-pointer rounded-lg border-0 bg-brass-500 px-3 py-2 text-xs font-semibold text-onaccent transition hover:bg-brass-400;
+  }
+
+  form input[type='checkbox'],
+  form input[type='radio'] {
+    @apply h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-md border border-parchment-100/30 bg-ink-950 transition;
+  }
+
+  form input[type='checkbox']:checked,
+  form input[type='radio']:checked {
+    @apply border-brass-400 bg-brass-500;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23120c07' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.4' d='m3 8 3.1 3.1L13 4.8'/%3E%3C/svg%3E");
+  }
+
+  form input[type='checkbox']:focus,
+  form input[type='radio']:focus {
+    @apply ring-2 ring-brass-500/30;
+  }
+
+  /* Native date inputs need their own treatment because browser calendar
+     controls otherwise retain a bright, unstyled appearance in dark mode. */
+  form input[type='date'] {
+    @apply min-h-12 cursor-pointer pr-3;
+  }
+
+  form input[type='date']::-webkit-datetime-edit {
+    @apply pr-2;
+  }
+
+  form input[type='date']::-webkit-calendar-picker-indicator {
+    @apply cursor-pointer rounded-md p-1 opacity-70 transition hover:bg-brass-500/15 hover:opacity-100;
+    filter: sepia(1) saturate(1.15) hue-rotate(350deg);
+  }
+
+  html.light form input[type='date']::-webkit-calendar-picker-indicator {
+    filter: sepia(1) saturate(2) hue-rotate(350deg) brightness(0.85);
+  }
+
+  form textarea {
+    @apply min-h-24 leading-relaxed;
+  }
+
+  form label {
+    @apply font-medium;
+  }
+
+  /* Signature divider motif: an angled brass sweep, referencing a silambam stick strike */
+  .stick-divider {
+    @apply relative h-10 w-full overflow-hidden;
+  }
+  .stick-divider::before {
+    content: '';
+    @apply absolute inset-0 bg-stick-sweep opacity-70;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-ink-700 rounded-md;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html.light .admin-portal,
+html.light .student-portal {
+  --color-ink-950: 248 249 250;
+  --color-ink-900: 255 255 255;
+  --color-ink-800: 248 249 250;
+  --color-ink-700: 222 226 230;
+  --color-parchment-100: 33 37 41;
+  --color-parchment-200: 73 80 87;
+  --color-parchment-300: 108 117 125;
+}
+
+html.light .admin-portal aside,
+html.light .student-portal aside {
+  background-color: rgb(28 28 28);
+  --color-parchment-100: 234 234 234;
+  --color-parchment-200: 210 210 210;
+  --color-parchment-300: 170 170 170;
+  --color-slate-400: 185 185 185;
+  --color-slate-500: 150 150 150;
+}
