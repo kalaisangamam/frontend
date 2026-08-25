@@ -50,6 +50,7 @@ const StudentFees = () => {
       <div className="card p-8 h-fit"><div className="flex items-center gap-2 mb-4"><FiCreditCard className="text-brass-500" /><p className="font-display text-parchment-100">Online Payment</p></div>
         {payment?.upi_qr_url ? <img src={payment.upi_qr_url} alt="Payment QR Code" className="w-full rounded-md mb-4" /> : <div className="h-40 bg-ink-700 rounded-md flex items-center justify-center text-slate-500 text-xs mb-4">QR code not configured yet</div>}
         <p className="text-xs text-slate-500 mb-1">Scan QR Code to Pay</p>{payment?.payment_number && <p className="text-sm text-parchment-200 font-mono mt-3">Payment Number: {payment.payment_number}</p>}
+        {payment?.upi_id && <p className="text-sm text-parchment-200 font-mono mt-3">UPI ID: {payment.upi_id}</p>}
         <p className="text-xs text-slate-500 mt-4 leading-relaxed">After payment, the academy will verify it and add it as a transaction under the correct monthly fee.</p>
       </div>
     </div>}
