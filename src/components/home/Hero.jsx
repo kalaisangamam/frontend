@@ -81,13 +81,40 @@ const EventQueueControls = ({
   );
 };
 
+const FlashNewsCard = ({ announcement }) => {
+  const isCommonNews = announcement.branch?.trim().toLowerCase() === "common";
+
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-brass-500/30 bg-ink-900/90 px-4 py-3 shadow-[0_16px_36px_-22px_rgba(224,133,50,0.85)] backdrop-blur-md">
+      <span aria-label="Flash News" className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brass-500/30 bg-ink-900/90 text-brass-400">
+        <FiZap aria-hidden="true" />
+      </span>
+      <div className="min-w-0 flex-1">
+        {!isCommonNews && (
+          <div className="mb-1.5 flex items-center gap-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-brass-400">
+            <FiMapPin aria-hidden="true" className="text-xs" />
+            <span>{announcement.branch}</span>
+          </div>
+        )}
+        <marquee
+          className="block w-full text-sm leading-relaxed text-parchment-100"
+          behavior="scroll"
+          direction="left"
+          scrollamount="3"
+          aria-label={`Flash News: ${announcement.description}`}
+        >
+          {announcement.description}
+        </marquee>
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
-  const [flashNews, setFlashNews] = useState("");
-  const [branches, setBranches] = useState([]);
-  const [activeBranchId, setActiveBranchId] = useState(() => window.localStorage.getItem("kalai_active_branch_id") || "");
+  const [flashNews, setFlashNews] = useState(null);
 
   useEffect(() => {
     publicService
@@ -95,22 +122,24 @@ const Hero = () => {
       .then(({ data }) => setEvents(Array.isArray(data.data) ? data.data : []))
       .catch(() => setEvents([]));
 
-    publicService.getBranches().then(({ data }) => setBranches(data.data || [])).catch(() => setBranches([]));
   }, []);
 
   useEffect(() => {
-    publicService.getHeroAnnouncement(activeBranchId).then(({ data }) => {
+    publicService.getHeroAnnouncement().then(({ data }) => {
       const announcement = data?.data;
       if (announcement) {
-        const scope = announcement.branches?.name || "Common";
-        setFlashNews(`${scope}: ${announcement.title}`);
+        setFlashNews({
+          branch: announcement.branches?.name || "Common",
+          description: announcement.description || announcement.title,
+        });
         return;
       }
       return publicService.getSiteSettings().then(({ data: settings }) => {
-        setFlashNews(String(settings?.data?.flash_news || "").trim());
+        const description = String(settings?.data?.flash_news || "").trim();
+        setFlashNews(description ? { branch: "Common", description } : null);
       });
-    }).catch(() => setFlashNews(""));
-  }, [activeBranchId]);
+    }).catch(() => setFlashNews(null));
+  }, []);
 
   useEffect(() => {
     if (activeEventIndex >= events.length) setActiveEventIndex(0);
@@ -127,13 +156,6 @@ const Hero = () => {
     navigate("/contact");
   };
 
-  const selectBranch = (event) => {
-    const value = event.target.value;
-    setActiveBranchId(value);
-    if (value) window.localStorage.setItem("kalai_active_branch_id", value);
-    else window.localStorage.removeItem("kalai_active_branch_id");
-  };
-
   return (
     <section
       id="home"
@@ -145,45 +167,17 @@ const Hero = () => {
       </div>
 
       {flashNews && (
-        <div className="mb-4 flex justify-center lg:hidden">
-          <div className="flex w-80 max-w-md items-center gap-3 overflow-hidden rounded-full border border-brass-500/25 bg-ink-900/80 px-3 py-2 shadow-[0_10px_30px_-18px_rgba(224,133,50,0.8)] backdrop-blur-sm sm:max-w-lg">
-            <span className="shrink-0 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-brass-500">
-              Flash News
-            </span>
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <marquee
-                className="text-sm text-parchment-200"
-                behavior="scroll"
-                direction="left"
-                scrollamount="3"
-              >
-                <span>{flashNews}</span>
-              </marquee>
-            </div>
-          </div>
+        <div className="mx-auto mb-4 w-[min(100%-2rem,34rem)] lg:hidden">
+          <FlashNewsCard announcement={flashNews} />
         </div>
       )}
-      {branches.length > 0 && <div className="mb-4 flex justify-center lg:hidden"><label className="flex items-center gap-2 text-xs text-slate-400">Viewing news for<select value={activeBranchId} onChange={selectBranch} className="max-w-44 rounded-sm border border-parchment-100/15 bg-ink-900 px-2 py-1 text-xs text-parchment-100 outline-none focus:border-brass-500"><option value="">Common</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label></div>}
 
       <div className="relative lg:min-h-[42rem]">
         {flashNews && (
-          <div className="absolute left-1/2 top-0 z-30 hidden w-[min(32rem,calc(100%-3rem))] -translate-x-1/2 items-center gap-3 overflow-hidden rounded-full border border-brass-500/25 bg-ink-900/85 px-4 py-2.5 shadow-[0_10px_30px_-18px_rgba(224,133,50,0.8)] backdrop-blur-md lg:flex">
-            <span className="shrink-0 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-brass-500">
-              Flash News
-            </span>
-            <div className="min-w-0 flex-1 overflow-hidden">
-              <marquee
-                className="text-sm text-parchment-200"
-                behavior="scroll"
-                direction="left"
-                scrollamount="3"
-              >
-                <span>{flashNews}</span>
-              </marquee>
-            </div>
+          <div className="absolute left-1/2 top-0 z-30 hidden w-[min(34rem,calc(100%-3rem))] -translate-x-1/2 lg:block">
+            <FlashNewsCard announcement={flashNews} />
           </div>
         )}
-        {branches.length > 0 && <div className="absolute right-6 top-0 z-30 hidden lg:block"><label className="flex items-center gap-2 rounded-full border border-parchment-100/10 bg-ink-900/85 px-3 py-1.5 text-xs text-slate-400 backdrop-blur-md">Viewing<select value={activeBranchId} onChange={selectBranch} className="max-w-40 bg-transparent text-xs text-parchment-100 outline-none"><option value="">Common</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label></div>}
 
         {/* DESKTOP ONLY: full-bleed banner image, flush to the viewport's right edge,
             with the event info floating as an overlay card on top of it */}

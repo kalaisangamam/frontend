@@ -656,8 +656,10 @@ const Contact = () => {
       if (liveBranches.length) setBranches(liveBranches);
     }).catch(() => {});
   }, []);
-  const mainBranch = branches.find((b) => b.id === 'main') || branches[0];
-  const otherBranches = branches.filter((b) => b.id !== 'main');
+  // Live branch IDs are UUIDs. The first display-order branch is the main one;
+  // use its actual ID when excluding it from the "Other" section.
+  const mainBranch = branches.find((b) => b.id === 'main' || b.display_order === 1) || branches[0];
+  const otherBranches = branches.filter((b) => b.id !== mainBranch?.id);
 
   return (
     <PublicLayout>

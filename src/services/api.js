@@ -2,9 +2,10 @@ import axios from 'axios';
 import { clearStoredAuth, getStoredToken } from '../utils/authStorage';
 
 const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL;
-const apiBaseUrl = configuredBaseUrl.replace(/\/+$/, '').endsWith('/api')
-  ? configuredBaseUrl.replace(/\/+$/, '')
-  : `${configuredBaseUrl.replace(/\/+$/, '')}/api`;
+const normalizedBaseUrl = configuredBaseUrl.replace(/\/+$/, '');
+const apiBaseUrl = normalizedBaseUrl.endsWith('/api')
+  ? normalizedBaseUrl
+  : `${normalizedBaseUrl}/api`;
 
 const api = axios.create({
   baseURL: apiBaseUrl,
