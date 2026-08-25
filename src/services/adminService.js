@@ -86,5 +86,8 @@ export const adminService = {
 
   // Settings
   updateSetting: (key, value) => api.put(`/settings/${key}`, value),
+  getBranchesAdmin: () => api.get('/settings/branches/list'),
+  createBranch: (payload) => api.post('/settings/branches', payload),
+  updateBranch: (id, payload) => api.put(`/settings/branches/${id}`, payload),
   uploadPaymentQr: (formData) => api.post('/settings/payment-qr', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
 };

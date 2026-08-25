@@ -16,6 +16,7 @@ const LINKS = [
   { to: '/admin/achievements', label: 'Achievements', icon: FiAward },
   { to: '/admin/gallery', label: 'Gallery', icon: FiImage },
   { to: '/admin/events', label: 'Events', icon: FiCalendar },
+  { to: '/admin/announcements', label: 'Flash News', icon: FiMessageSquare },
   { to: '/admin/testimonials', label: 'Testimonials', icon: FiMessageSquare },
   { to: '/admin/enquiries', label: 'Enquiries', icon: FiMail },
   { to: '/admin/attendance', label: 'Attendance', icon: FiCheckSquare },

@@ -38,6 +38,7 @@ import AdminAttendance from './pages/admin/AdminAttendance.jsx';
 import AdminFees from './pages/admin/AdminFees.jsx';
 import AdminSettings from './pages/admin/AdminSettings.jsx';
 import AdminEnquiries from './pages/admin/AdminEnquiries.jsx';
+import AdminAnnouncements from './pages/admin/AdminAnnouncements.jsx';
 import { homeSectionStorageKey } from './utils/homeSectionNavigation.jsx';
 
 /**
@@ -183,6 +184,7 @@ function App() {
         <Route path="/admin/achievements" element={<ProtectedRoute role="admin"><AdminAchievements /></ProtectedRoute>} />
         <Route path="/admin/gallery" element={<ProtectedRoute role="admin"><AdminGallery /></ProtectedRoute>} />
         <Route path="/admin/events" element={<ProtectedRoute role="admin"><AdminEvents /></ProtectedRoute>} />
+        <Route path="/admin/announcements" element={<ProtectedRoute role="admin"><AdminAnnouncements /></ProtectedRoute>} />
         <Route path="/admin/testimonials" element={<ProtectedRoute role="admin"><AdminTestimonials /></ProtectedRoute>} />
         <Route path="/admin/faqs" element={<ProtectedRoute role="admin"><AdminFaqs /></ProtectedRoute>} />
         <Route path="/admin/attendance" element={<ProtectedRoute role="admin"><AdminAttendance /></ProtectedRoute>} />

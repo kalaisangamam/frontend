@@ -7,10 +7,12 @@ import ConfirmDialog from '../../components/dashboard/admin/ConfirmDialog.jsx';
 import { SkeletonGrid, ErrorState } from '../../components/common/StateViews.jsx';
 import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext.jsx';
+import { publicService } from '../../services/publicService';
 
 const emptyForm = {
   title: '', description: '', event_date: '', last_date: '', registration_status: 'coming_soon',
   registration_link: '', qr_code_url: '', contact_info: '', show_on_hero: true,
+  branch_id: '',
 };
 
 const AdminAnnouncements = () => {
@@ -23,12 +25,14 @@ const AdminAnnouncements = () => {
   const [file, setFile] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [branches, setBranches] = useState([]);
 
   const load = () => adminService.getAnnouncementsAdmin().then(({ data }) => setRows(data.data)).catch(() => setError(true));
   useEffect(() => { load(); }, []);
+  useEffect(() => { publicService.getBranches().then(({ data }) => setBranches(data.data || [])).catch(() => setBranches([])); }, []);
 
   const openCreate = () => { setEditing(null); setForm(emptyForm); setFile(null); setModalOpen(true); };
-  const openEdit = (a) => { setEditing(a); setForm({ ...emptyForm, ...a }); setFile(null); setModalOpen(true); };
+  const openEdit = (a) => { const { branches: _branch, ...announcement } = a; setEditing(a); setForm({ ...emptyForm, ...announcement }); setFile(null); setModalOpen(true); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +71,7 @@ const AdminAnnouncements = () => {
 
   return (
     <AdminDashboardLayout>
-      <AdminPageHeader title="Announcements" subtitle="Shown in the Hero card and the Announcements section." actionLabel="Add Announcement" onAction={openCreate} />
+      <AdminPageHeader title="Flash News" subtitle="Choose whether each update is common or visible for a specific branch." actionLabel="Add Flash News" onAction={openCreate} />
 
       {!rows && !error && <SkeletonGrid count={3} />}
       {error && <ErrorState message="Couldn't load announcements right now." />}
@@ -77,6 +81,7 @@ const AdminAnnouncements = () => {
           columns={[
             { key: 'title', label: 'Title' },
             { key: 'registration_status', label: 'Status' },
+            { key: 'branch_id', label: 'Display Branch', render: (r) => r.branches?.name || 'Common' },
             { key: 'show_on_hero', label: 'On Hero', render: (r) => (r.show_on_hero ? 'Yes' : 'No') },
           ]}
           rows={rows}
@@ -90,11 +95,18 @@ const AdminAnnouncements = () => {
         />
       )}
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Announcement' : 'Add Announcement'} maxWidth="max-w-2xl">
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Flash News' : 'Add Flash News'} maxWidth="max-w-2xl">
         <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label className="text-xs text-slate-400 mb-1.5 block">Title</label>
             <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none" />
+          </div>
+          <div>
+            <label className="text-xs text-slate-400 mb-1.5 block">Display Branch</label>
+            <select value={form.branch_id || ''} onChange={(e) => setForm({ ...form, branch_id: e.target.value })} className="w-full bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none">
+              <option value="">Common</option>
+              {branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}
+            </select>
           </div>
           <div className="sm:col-span-2">
             <label className="text-xs text-slate-400 mb-1.5 block">Description</label>

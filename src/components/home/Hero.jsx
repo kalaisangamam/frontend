@@ -86,6 +86,8 @@ const Hero = () => {
   const [events, setEvents] = useState([]);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
   const [flashNews, setFlashNews] = useState("");
+  const [branches, setBranches] = useState([]);
+  const [activeBranchId, setActiveBranchId] = useState(() => window.localStorage.getItem("kalai_active_branch_id") || "");
 
   useEffect(() => {
     publicService
@@ -93,14 +95,22 @@ const Hero = () => {
       .then(({ data }) => setEvents(Array.isArray(data.data) ? data.data : []))
       .catch(() => setEvents([]));
 
-    publicService
-      .getSiteSettings()
-      .then(({ data }) => {
-        const value = data?.data?.flash_news || "";
-        setFlashNews(String(value).trim());
-      })
-      .catch(() => setFlashNews(""));
+    publicService.getBranches().then(({ data }) => setBranches(data.data || [])).catch(() => setBranches([]));
   }, []);
+
+  useEffect(() => {
+    publicService.getHeroAnnouncement(activeBranchId).then(({ data }) => {
+      const announcement = data?.data;
+      if (announcement) {
+        const scope = announcement.branches?.name || "Common";
+        setFlashNews(`${scope}: ${announcement.title}`);
+        return;
+      }
+      return publicService.getSiteSettings().then(({ data: settings }) => {
+        setFlashNews(String(settings?.data?.flash_news || "").trim());
+      });
+    }).catch(() => setFlashNews(""));
+  }, [activeBranchId]);
 
   useEffect(() => {
     if (activeEventIndex >= events.length) setActiveEventIndex(0);
@@ -115,6 +125,13 @@ const Hero = () => {
 
   const navigateToContact = () => {
     navigate("/contact");
+  };
+
+  const selectBranch = (event) => {
+    const value = event.target.value;
+    setActiveBranchId(value);
+    if (value) window.localStorage.setItem("kalai_active_branch_id", value);
+    else window.localStorage.removeItem("kalai_active_branch_id");
   };
 
   return (
@@ -146,6 +163,7 @@ const Hero = () => {
           </div>
         </div>
       )}
+      {branches.length > 0 && <div className="mb-4 flex justify-center lg:hidden"><label className="flex items-center gap-2 text-xs text-slate-400">Viewing news for<select value={activeBranchId} onChange={selectBranch} className="max-w-44 rounded-sm border border-parchment-100/15 bg-ink-900 px-2 py-1 text-xs text-parchment-100 outline-none focus:border-brass-500"><option value="">Common</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label></div>}
 
       <div className="relative lg:min-h-[42rem]">
         {flashNews && (
@@ -165,6 +183,7 @@ const Hero = () => {
             </div>
           </div>
         )}
+        {branches.length > 0 && <div className="absolute right-6 top-0 z-30 hidden lg:block"><label className="flex items-center gap-2 rounded-full border border-parchment-100/10 bg-ink-900/85 px-3 py-1.5 text-xs text-slate-400 backdrop-blur-md">Viewing<select value={activeBranchId} onChange={selectBranch} className="max-w-40 bg-transparent text-xs text-parchment-100 outline-none"><option value="">Common</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label></div>}
 
         {/* DESKTOP ONLY: full-bleed banner image, flush to the viewport's right edge,
             with the event info floating as an overlay card on top of it */}

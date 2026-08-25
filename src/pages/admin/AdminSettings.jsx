@@ -1,123 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import AdminDashboardLayout from '../../layouts/AdminDashboardLayout.jsx';
 import AdminPageHeader from '../../components/dashboard/admin/AdminPageHeader.jsx';
+import Modal from '../../components/dashboard/admin/Modal.jsx';
 import { adminService } from '../../services/adminService';
 import { publicService } from '../../services/publicService';
 import { useToast } from '../../context/ToastContext.jsx';
 
+const blankBranch = { name: '', address: '', map_url: '', contact_number_1: '', contact_number_2: '', contact_number_3: '', email: '', working_hours: '', status: 'active', display_order: 0 };
+const inputClass = 'w-full mt-1.5 bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none';
+
 const AdminSettings = () => {
   const { showToast } = useToast();
-  const [site, setSite] = useState(null);
-  const [payment, setPayment] = useState(null);
-  const [qrFile, setQrFile] = useState(null);
-  const [savingSite, setSavingSite] = useState(false);
-  const [savingPayment, setSavingPayment] = useState(false);
-  const [savingQr, setSavingQr] = useState(false);
-
-  useEffect(() => {
-    publicService.getSiteSettings().then(({ data }) => setSite(data.data)).catch(() => {});
-    publicService.getPaymentSettings().then(({ data }) => setPayment(data.data)).catch(() => {});
-  }, []);
-
-  const saveSite = async (e) => {
-    e.preventDefault();
-    setSavingSite(true);
-    try {
-      await adminService.updateSetting('site_info', site);
-      showToast('Site info updated.');
-    } catch (err) {
-      showToast(err.response?.data?.message || 'Failed to save.', 'error');
-    } finally {
-      setSavingSite(false);
-    }
-  };
-
-  const savePayment = async (e) => {
-    e.preventDefault();
-    setSavingPayment(true);
-    try {
-      await adminService.updateSetting('payment_info', payment);
-      showToast('Payment settings updated.');
-    } catch (err) {
-      showToast(err.response?.data?.message || 'Failed to save.', 'error');
-    } finally {
-      setSavingPayment(false);
-    }
-  };
-
-  const uploadQr = async () => {
-    if (!qrFile) return;
-    setSavingQr(true);
-    try {
-      const fd = new FormData();
-      fd.append('qr', qrFile);
-      const { data } = await adminService.uploadPaymentQr(fd);
-      setPayment(data.data);
-      showToast('Payment QR updated.');
-      setQrFile(null);
-    } catch (err) {
-      showToast(err.response?.data?.message || 'Failed to upload QR.', 'error');
-    } finally {
-      setSavingQr(false);
-    }
-  };
-
-  return (
-    <AdminDashboardLayout>
-      <AdminPageHeader title="Website Settings" subtitle="Contact details, social links and payment information." />
-
-      <div className="grid lg:grid-cols-2 gap-6">
-        <form onSubmit={saveSite} className="card p-6 space-y-4">
-          <p className="font-display text-parchment-100 mb-1">Site Info</p>
-          {site && ['flash_news', 'address', 'phone', 'whatsapp', 'email', 'facebook', 'instagram', 'youtube'].map((key) => (
-            <div key={key}>
-              <label className="text-xs text-slate-400 mb-1.5 block capitalize">{key.replace('_', ' ')}</label>
-              <input
-                value={site[key] || ''}
-                onChange={(e) => setSite({ ...site, [key]: e.target.value })}
-                className="w-full bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none"
-              />
-            </div>
-          ))}
-          <button type="submit" disabled={savingSite} className="btn-primary w-full disabled:opacity-60">{savingSite ? 'Saving…' : 'Save Site Info'}</button>
-        </form>
-
-        <div className="space-y-6">
-          <form onSubmit={savePayment} className="card p-6 space-y-4">
-            <p className="font-display text-parchment-100 mb-1">Payment Info</p>
-            {payment && (
-              <>
-                <div>
-                  <label className="text-xs text-slate-400 mb-1.5 block">Payment Number</label>
-                  <input
-                    value={payment.payment_number || ''}
-                    onChange={(e) => setPayment({ ...payment, payment_number: e.target.value })}
-                    className="w-full bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-slate-400 mb-1.5 block">UPI ID</label>
-                  <input
-                    value={payment.upi_id || ''}
-                    onChange={(e) => setPayment({ ...payment, upi_id: e.target.value })}
-                    className="w-full bg-ink-950 border border-parchment-100/10 rounded-sm px-4 py-2.5 text-sm text-parchment-100 focus:border-brass-500 outline-none"
-                  />
-                </div>
-              </>
-            )}
-            <button type="submit" disabled={savingPayment} className="btn-primary w-full disabled:opacity-60">{savingPayment ? 'Saving…' : 'Save Payment Info'}</button>
-          </form>
-
-          <div className="card p-6 space-y-4">
-            <p className="font-display text-parchment-100 mb-1">Payment QR Code</p>
-            {payment?.upi_qr_url && <img src={payment.upi_qr_url} alt="Current payment QR" className="w-40 rounded-md" />}
-            <input type="file" accept="image/*" onChange={(e) => setQrFile(e.target.files[0])} className="text-sm text-slate-300" />
-            <button onClick={uploadQr} disabled={savingQr || !qrFile} className="btn-secondary w-full disabled:opacity-60">{savingQr ? 'Uploading…' : 'Upload New QR'}</button>
-          </div>
-        </div>
-      </div>
-    </AdminDashboardLayout>
-  );
+  const [site, setSite] = useState(null); const [payment, setPayment] = useState(null); const [branches, setBranches] = useState(null);
+  const [branch, setBranch] = useState(null); const [form, setForm] = useState(blankBranch); const [saving, setSaving] = useState(false); const [qrFile, setQrFile] = useState(null);
+  const loadBranches = () => adminService.getBranchesAdmin().then(({ data }) => setBranches(data.data)).catch(() => setBranches([]));
+  useEffect(() => { publicService.getSiteSettings().then(({ data }) => setSite(data.data)).catch(() => {}); publicService.getPaymentSettings().then(({ data }) => setPayment(data.data)).catch(() => {}); loadBranches(); }, []);
+  const openBranch = (value) => { setBranch(value || {}); setForm(value ? { ...blankBranch, ...value } : { ...blankBranch, display_order: (branches?.length || 0) + 1 }); };
+  const closeBranch = () => { setBranch(null); setForm(blankBranch); };
+  const saveBranch = async (e) => { e.preventDefault(); setSaving(true); try { if (branch?.id) await adminService.updateBranch(branch.id, form); else await adminService.createBranch(form); showToast(branch?.id ? 'Branch contact updated.' : 'Branch created.'); closeBranch(); loadBranches(); } catch (err) { showToast(err.response?.data?.message || 'Failed to save branch.', 'error'); } finally { setSaving(false); } };
+  const save = async (kind, value) => { setSaving(true); try { await adminService.updateSetting(kind, value); showToast('Settings updated.'); } catch (err) { showToast(err.response?.data?.message || 'Failed to save.', 'error'); } finally { setSaving(false); } };
+  const uploadQr = async () => { if (!qrFile) return; setSaving(true); try { const fd = new FormData(); fd.append('qr', qrFile); const { data } = await adminService.uploadPaymentQr(fd); setPayment(data.data); setQrFile(null); showToast('Payment QR updated.'); } catch (err) { showToast(err.response?.data?.message || 'Failed to upload QR.', 'error'); } finally { setSaving(false); } };
+  return <AdminDashboardLayout><AdminPageHeader title="Website Settings" subtitle="Manage branch contacts, academy details and payment information." />
+    <section className="mb-7"><div className="mb-4 flex items-center justify-between gap-4"><div><h2 className="font-display text-xl text-parchment-100">Branch Contacts</h2><p className="mt-1 text-sm text-slate-400">Active branches are displayed automatically on the Contact page.</p></div><button className="btn-primary shrink-0" onClick={() => openBranch()}>Add Branch</button></div><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{branches?.map((item) => <article key={item.id} className="card p-5"><div className="flex justify-between gap-3"><div><h3 className="font-display text-lg text-parchment-100">{item.name}</h3><p className="mt-1 text-xs uppercase tracking-wider text-brass-400">{item.status} · Order {item.display_order}</p></div><button onClick={() => openBranch(item)} className="text-xs text-brass-400 hover:underline">Edit Contact</button></div><p className="mt-4 min-h-10 text-sm text-slate-400">{item.address || 'No address added'}</p><p className="mt-2 text-sm text-slate-300">{item.contact_number_1 || 'No contact number'}</p><p className="mt-1 break-all text-sm text-slate-400">{item.email || 'No email added'}</p></article>)}{branches?.length === 0 && <div className="card p-5 text-sm text-slate-400">No branches yet. Add your first academy branch.</div>}</div></section>
+    <div className="grid gap-6 lg:grid-cols-2"><form onSubmit={(e) => { e.preventDefault(); save('site_info', site); }} className="card p-6 space-y-4"><p className="font-display text-parchment-100">Academy & Social Info</p>{site && ['academy_name', 'tagline', 'whatsapp', 'facebook', 'instagram', 'youtube'].map((key) => <Field key={key} label={key.replace('_', ' ')} value={site[key]} set={(v) => setSite({ ...site, [key]: v })} />)}<button disabled={saving} className="btn-primary w-full disabled:opacity-60">Save Site Info</button></form><div className="space-y-6"><form onSubmit={(e) => { e.preventDefault(); save('payment_info', payment); }} className="card p-6 space-y-4"><p className="font-display text-parchment-100">Payment Info</p>{payment && ['payment_number', 'upi_id'].map((key) => <Field key={key} label={key.replace('_', ' ')} value={payment[key]} set={(v) => setPayment({ ...payment, [key]: v })} />)}<button disabled={saving} className="btn-primary w-full disabled:opacity-60">Save Payment Info</button></form><div className="card p-6 space-y-4"><p className="font-display text-parchment-100">Payment QR Code</p>{payment?.upi_qr_url && <img src={payment.upi_qr_url} alt="Current payment QR" className="w-40 rounded-md" />}<input type="file" accept="image/*" onChange={(e) => setQrFile(e.target.files[0])} className="text-sm text-slate-300" /><button onClick={uploadQr} disabled={saving || !qrFile} className="btn-secondary w-full disabled:opacity-60">Upload New QR</button></div></div></div>
+    <Modal open={branch !== null} onClose={closeBranch} title={branch?.id ? 'Edit Branch Contact' : 'Add Branch'} maxWidth="max-w-2xl"><form onSubmit={saveBranch} className="grid gap-4 sm:grid-cols-2"><Field label="Branch Name" required value={form.name} set={(v) => setForm({ ...form, name: v })} /><Field label="Display Order" type="number" value={form.display_order} set={(v) => setForm({ ...form, display_order: v })} /><div className="sm:col-span-2"><Field label="Address" value={form.address} set={(v) => setForm({ ...form, address: v })} /></div><div className="sm:col-span-2"><Field label="Google Maps / Map URL" value={form.map_url} set={(v) => setForm({ ...form, map_url: v })} /></div>{[1, 2, 3].map((num) => <Field key={num} label={`Contact Number ${num}`} value={form[`contact_number_${num}`]} set={(v) => setForm({ ...form, [`contact_number_${num}`]: v })} />)}<Field label="Email" type="email" value={form.email} set={(v) => setForm({ ...form, email: v })} /><div className="sm:col-span-2"><Field label="Working Hours" value={form.working_hours} set={(v) => setForm({ ...form, working_hours: v })} /></div><label className="text-xs text-slate-400">Status<select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={inputClass}><option value="active">Active</option><option value="inactive">Inactive</option></select></label><button disabled={saving} className="btn-primary self-end disabled:opacity-60">{saving ? 'Saving…' : branch?.id ? 'Save Contact' : 'Create Branch'}</button></form></Modal>
+  </AdminDashboardLayout>;
 };
-
+const Field = ({ label, value, set, type = 'text', required = false }) => <label className="block text-xs capitalize text-slate-400">{label}<input required={required} type={type} value={value || ''} onChange={(e) => set(e.target.value)} className={inputClass} /></label>;
 export default AdminSettings;
