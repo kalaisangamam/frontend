@@ -115,12 +115,15 @@ const StudentFees = () => {
                           Current Fee
                         </p>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                           <FiCalendar className="text-brass-500" size={15} />
 
                           <h2 className="font-display text-xl text-parchment-100">
                             {current.month}
                           </h2>
+                          <span className="text-sm font-medium text-brass-400">
+                            {current.programs?.name || "Programme not assigned"}
+                          </span>
                         </div>
                       </div>
 
@@ -267,7 +270,7 @@ const StudentFees = () => {
                                 </h3>
 
                                 <p className="text-[11px] text-slate-500 mt-0.5">
-                                  Monthly fee record
+                                  {fee.programs?.name || "Programme not assigned"} · Monthly fee record
                                 </p>
                               </div>
                             </div>
@@ -277,7 +280,7 @@ const StudentFees = () => {
                         </div>
 
                         {/* Amount Grid */}
-                        <div className="grid grid-cols-3 gap-3 mt-5">
+                        <div className="grid grid-cols-4 gap-3 mt-5">
                           <div>
                             <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">
                               Fee
@@ -305,6 +308,15 @@ const StudentFees = () => {
 
                             <p className="text-sm font-mono text-maroon-400">
                               Rs. {fee.pending_amount}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">
+                              Programme
+                            </p>
+
+                            <p className="text-sm font-mono text-maroon-400">
+                              {fee.programs?.name || "Programme not assigned"}
                             </p>
                           </div>
                         </div>

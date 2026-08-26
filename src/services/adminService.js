@@ -80,6 +80,9 @@ export const adminService = {
 
   // Fees
   getFees: (params) => api.get('/fees', { params }),
+  getFeeStudentsByProgramme: (programmeId) => api.get('/fees/students', { params: { programme_id: programmeId } }),
+  getFeeHistory: (month) => api.get('/fees/history', { params: month ? { month } : {} }),
+  downloadFeeHistoryPdf: (month) => api.get(`/fees/history/${encodeURIComponent(month)}/pdf`, { responseType: 'blob' }),
   upsertFee: (payload) => api.post('/fees', payload),
   upsertFeesBulk: (payload) => api.post('/fees/bulk', payload),
   updateFeeStatus: (id, payload) => api.patch(`/fees/${id}/status`, payload),

@@ -181,7 +181,7 @@ const AdminStudents = () => {
               actions={(row) => (
                 <>
                   <button onClick={() => openEdit(row)} className="text-brass-400 text-xs hover:underline">Edit</button>
-                  <button onClick={() => setConfirm({ type: 'remove', id: row.id })} className="text-maroon-400 text-xs hover:underline">Remove</button>
+                  <button onClick={() => setConfirm({ type: 'remove', id: row.id })} className="text-slate-400 text-xs hover:underline">Deactivate</button>
                   <button onClick={() => setConfirm({ type: 'delete', id: row.id, name: row.full_name })} className="text-maroon-400 text-xs hover:underline">Delete</button>
                 </>
               )}
@@ -313,7 +313,7 @@ const confirmTitle = (confirm) => {
   if (confirm?.type === 'approve') return 'Approve Request';
   if (confirm?.type === 'reject') return 'Reject Request';
   if (confirm?.type === 'delete') return 'Delete Student Permanently?';
-  return 'Remove Student';
+  return 'Deactivate Student';
 };
 
 const confirmMessage = (confirm) => {
@@ -327,7 +327,7 @@ const confirmLabel = (confirm) => {
   if (confirm?.type === 'approve') return 'Approve';
   if (confirm?.type === 'reject') return 'Reject';
   if (confirm?.type === 'delete') return 'Delete Permanently';
-  return 'Remove';
+  return 'Deactivate';
 };
 
 export default AdminStudents;
