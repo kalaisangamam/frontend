@@ -17,6 +17,8 @@ export const adminService = {
   deactivateStudent: (id) => api.delete(`/students/${id}`),
   deleteStudent: (id) => api.delete(`/students/${id}/permanent`),
   assignProgram: (id, payload) => api.post(`/students/${id}/programs`, payload),
+  getLevelEnrollments: (programId) => api.get('/students/level-enrollments', { params: { program_id: programId } }),
+  assignLevelsBulk: (payload) => api.post('/students/levels/assign', payload),
   getStudentRequests: (params) => api.get('/students/requests', { params }),
   approveStudentRequest: (id) => api.post(`/students/requests/${id}/approve`),
   rejectStudentRequest: (id) => api.post(`/students/requests/${id}/reject`),
@@ -32,6 +34,7 @@ export const adminService = {
   getProgramsAdmin: () => api.get('/programs/admin'),
   createProgram: (payload) => api.post('/programs', payload),
   updateProgram: (id, payload) => api.put(`/programs/${id}`, payload),
+  updateProgramLevels: (id, levels) => api.put(`/programs/${id}/levels`, { levels }),
   deleteProgram: (id) => api.delete(`/programs/${id}`),
 
   // Achievements

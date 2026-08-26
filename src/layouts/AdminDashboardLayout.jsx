@@ -13,6 +13,7 @@ const LINKS = [
   { to: '/admin/students', label: 'Students', icon: FiUsers },
   { to: '/admin/masters', label: 'Masters', icon: FiUserCheck },
   { to: '/admin/programs', label: 'Programs', icon: FiBookOpen },
+  { to: '/admin/levels', label: 'Levels Management', icon: FiAward },
   { to: '/admin/achievements', label: 'Achievements', icon: FiAward },
   { to: '/admin/gallery', label: 'Gallery', icon: FiImage },
   { to: '/admin/events', label: 'Events', icon: FiCalendar },
