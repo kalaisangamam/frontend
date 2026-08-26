@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: 'Achievements', href: '/achievements' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Events', href: '/events' },
+  { label: 'Developers', href: '/developers' },
   // { label: 'Testimonials', href: '/#testimonials' },
   // { label: 'FAQ', href: '/#faq' },
   { label: 'Contact', href: '/contact' },

@@ -12,6 +12,7 @@ import AchievementsPage from './pages/public/AchievementsPage.jsx';
 import GalleryPage from './pages/public/GalleryPage.jsx';
 import EventsPage from './pages/public/EventsPage.jsx';
 import ContactPage from './pages/public/ContactPage.jsx';
+import DevelopersPage from './pages/public/DevelopersPage.jsx';
 import NotFound from './pages/public/NotFound.jsx';
 
 import StudentLogin from './pages/student/StudentLogin.jsx';
@@ -164,6 +165,7 @@ function App() {
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/developers" element={<DevelopersPage />} />
 
         {/* Student */}
         <Route path="/student/login" element={<StudentLogin />} />
