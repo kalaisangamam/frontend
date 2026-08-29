@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { FiMenu, FiUser, FiX } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
+import BrandIdentity from './BrandIdentity.jsx';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -47,9 +48,7 @@ const Navbar = () => {
       }`}
     >
       <div className="container-xl flex items-center justify-between h-16 lg:h-20">
-        <Link to="/" className="font-display text-xl lg:text-2xl font-semibold text-brass-400">
-          Kalai <span className="text-brass-500">Sangamam</span>
-        </Link>
+        <BrandIdentity placement="navbar" />
 
         <nav className="hidden xl:flex items-center gap-6">
           {NAV_LINKS.map((link) => {

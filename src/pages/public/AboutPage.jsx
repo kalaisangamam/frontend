@@ -40,8 +40,8 @@ const STORY_POINTS = [
       <>
         Kalai Sangamam began as a small Silambam kalari in Dindigul — a single
         room, a wooden stick, and a Guru's unwavering commitment to{" "}
-        <B>ஒழுக்கம்</B> (discipline). From that foundation, a{" "}
-        <B>legacy</B> was built.
+        <B>ஒழுக்கம்</B> (discipline). From that foundation, a <B>legacy</B> was
+        built.
       </>
     ),
   },
@@ -51,8 +51,8 @@ const STORY_POINTS = [
     text: (
       <>
         As our community's ambition grew, so did our offerings. Today the
-        academy delivers <B>world-class training</B> in Karate, Yoga,
-        Skating, Archery, and Hindi — a true multi-disciplinary powerhouse.
+        academy delivers <B>world-class training</B> in Yoga, Skating, Karate,
+        Silambam, Archery, and Hindi
       </>
     ),
   },
@@ -61,10 +61,10 @@ const STORY_POINTS = [
     title: "Structured, Safety-First Training",
     text: (
       <>
-        Every discipline is built around <B>structured, safety-first
-        coaching</B>, led by seasoned Masters who bring real{" "}
-        <B>அனுபவம்</B> (experience) to every session — turning effort into
-        measurable, lasting skill.
+        Every discipline is built around{" "}
+        <B>structured, safety-first coaching</B>, led by seasoned Masters who
+        bring real <B>அனுபவம்</B> (experience) to every session — turning effort
+        into measurable, lasting skill.
       </>
     ),
   },
@@ -101,8 +101,8 @@ const VISION_MISSION = [
       <>
         To deliver structured, safe, and professional training that builds{" "}
         <B>physical excellence, discipline, confidence</B>, teamwork, and
-        championship-level competitive skill — in every student, every
-        single day.
+        championship-level competitive skill — in every student, every single
+        day.
       </>
     ),
   },
@@ -114,9 +114,8 @@ const CORE_VALUES = [
     title: "Discipline",
     text: (
       <>
-        <B>ஒழுக்கம்</B> (discipline) is our foundation — building
-        consistency, focus, self-control, and respect through rigorous,
-        purposeful practice.
+        <B>ஒழுக்கம்</B> (discipline) is our foundation — building consistency,
+        focus, self-control, and respect through rigorous, purposeful practice.
       </>
     ),
   },
@@ -125,8 +124,8 @@ const CORE_VALUES = [
     title: "Excellence",
     text: (
       <>
-        We push every student toward <B>continuous improvement</B> and
-        expect nothing less than their personal best.
+        We push every student toward <B>continuous improvement</B> and expect
+        nothing less than their personal best.
       </>
     ),
   },
@@ -155,8 +154,8 @@ const CORE_VALUES = [
     title: "Confidence",
     text: (
       <>
-        We forge <B>தைரியம்</B> (courage) and self-belief, equipping
-        students with the strength to face any challenge head-on.
+        We forge <B>தைரியம்</B> (courage) and self-belief, equipping students
+        with the strength to face any challenge head-on.
       </>
     ),
   },
@@ -197,7 +196,6 @@ const PHILOSOPHY_POINTS = [
 const AboutPage = () => (
   <PublicLayout>
     <div className="pt-20 lg:pt-24">
-
       {/* PAGE INTRO */}
       <div className="container-xl text-center">
         <SectionHeading
@@ -213,7 +211,6 @@ const AboutPage = () => (
 
       {/* HERO: IMAGE + INTRO */}
       <div className="container-xl mt-10 lg:mt-14 grid lg:grid-cols-[45%_55%] gap-10 sm:gap-12 lg:gap-16 items-center">
-
         {/* LEFT — IMAGE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
@@ -262,12 +259,11 @@ const AboutPage = () => (
           </h2>
 
           <p className="text-slate-400 leading-relaxed text-base lg:text-lg max-w-xl">
-            Kalai Sangamam began as a single Silambam kalari in Dindigul and
-            has grown into a <B>premier multi-discipline academy</B> —
-            Silambam, Karate, Yoga, Skating, Archery, and Hindi, all under
-            one roof. Every session is built on <B>ஒழுக்கம்</B>{" "}
-            (discipline), driving real fitness, real confidence, and real
-            competitive results — not just attendance.
+            Kalai Sangamam began as a single Silambam kalari in Dindigul and has
+            grown into a <B>premier multi-discipline academy</B> — Yoga, Skating, Karate, Silambam, Archery, and Hindi all under one roof. Every
+            session is built on <B>ஒழுக்கம்</B> (discipline), driving real
+            fitness, real confidence, and real competitive results — not just
+            attendance.
           </p>
 
           <Link
@@ -407,11 +403,10 @@ const AboutPage = () => (
               transition={{ duration: 0.5 }}
               className="mt-4 text-slate-400 leading-relaxed"
             >
-              At Kalai Sangamam, training goes far beyond physical skill.
-              Every class is built to develop <B>ஒழுக்கம்</B> (discipline),
-              mental strength, and character alongside technique — shaping
-              students who carry these values well beyond the training hall,
-              for life.
+              At Kalai Sangamam, training goes far beyond physical skill. Every
+              class is built to develop <B>ஒழுக்கம்</B> (discipline), mental
+              strength, and character alongside technique — shaping students who
+              carry these values well beyond the training hall, for life.
             </motion.p>
           </div>
 

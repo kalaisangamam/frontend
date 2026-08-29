@@ -86,7 +86,10 @@ const FlashNewsCard = ({ announcement }) => {
 
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-brass-500/30 bg-ink-900/90 px-4 py-3 shadow-[0_16px_36px_-22px_rgba(224,133,50,0.85)] backdrop-blur-md">
-      <span aria-label="Flash News" className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brass-500/30 bg-ink-900/90 text-brass-400">
+      <span
+        aria-label="Flash News"
+        className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-brass-500/30 bg-ink-900/90 text-brass-400"
+      >
         <FiZap aria-hidden="true" />
       </span>
       <div className="min-w-0 flex-1">
@@ -121,24 +124,26 @@ const Hero = () => {
       .getEvents()
       .then(({ data }) => setEvents(Array.isArray(data.data) ? data.data : []))
       .catch(() => setEvents([]));
-
   }, []);
 
   useEffect(() => {
-    publicService.getHeroAnnouncement().then(({ data }) => {
-      const announcement = data?.data;
-      if (announcement) {
-        setFlashNews({
-          branch: announcement.branches?.name || "Common",
-          description: announcement.description || announcement.title,
+    publicService
+      .getHeroAnnouncement()
+      .then(({ data }) => {
+        const announcement = data?.data;
+        if (announcement) {
+          setFlashNews({
+            branch: announcement.branches?.name || "Common",
+            description: announcement.description || announcement.title,
+          });
+          return;
+        }
+        return publicService.getSiteSettings().then(({ data: settings }) => {
+          const description = String(settings?.data?.flash_news || "").trim();
+          setFlashNews(description ? { branch: "Common", description } : null);
         });
-        return;
-      }
-      return publicService.getSiteSettings().then(({ data: settings }) => {
-        const description = String(settings?.data?.flash_news || "").trim();
-        setFlashNews(description ? { branch: "Common", description } : null);
-      });
-    }).catch(() => setFlashNews(null));
+      })
+      .catch(() => setFlashNews(null));
   }, []);
 
   useEffect(() => {
@@ -245,8 +250,6 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
             className="relative lg:w-[46%]"
           >
-            <p className="eyebrow mb-4">Kalai Sangamam</p>
-
             {/* Tamil display heading — negative tracking removed and line-height opened up,
                 since Tamil conjuncts/matras clip under tight latin-style leading/tracking */}
             <h1 className="text-[1.35rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.25] tracking-[0.03em] text-parchment-100">
@@ -303,8 +306,8 @@ const Hero = () => {
 
             <p className="hidden mt-6 max-w-xl text-base leading-relaxed text-slate-300 text-justify lg:block lg:text-lg">
               We blend tradition, disciplined training, and modern excellence to
-              build strength, focus, confidence, and character — from Silambam &
-              Karate to Yoga, Skating & Archery.
+              build strength, focus, confidence, and character through Yoga,
+              Skating, Karate, Silambam, Archery & Hindi.
             </p>
 
             {/* discipline tags with icons */}

@@ -118,7 +118,7 @@ const About = () => {
               <p className="mt-4">
                 From{" "}
                 <span className="text-parchment-100">
-                  Silambam, Karate, Yoga, Skating, Archery, and Hindi
+                  Yoga, Skating, Karate, Silambam, Archery, and Hindi
                 </span>
                 , we help students build strength, focus, confidence, and
                 character — both inside and outside the training ground.
