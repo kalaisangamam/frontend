@@ -4,64 +4,40 @@ import AdminPageHeader from '../../components/dashboard/admin/AdminPageHeader.js
 import ConfirmDialog from '../../components/dashboard/admin/ConfirmDialog.jsx';
 import StudentMultiSelect from '../../components/dashboard/admin/StudentMultiSelect.jsx';
 import DataTable from '../../components/dashboard/admin/DataTable.jsx';
+import Modal from '../../components/dashboard/admin/Modal.jsx';
 import { ErrorState } from '../../components/common/StateViews.jsx';
 import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext.jsx';
 
-const statusStyles = { paid: 'text-brass-400 border-brass-500/30', pending: 'text-maroon-400 border-maroon-500/30', partially_paid: 'text-slate-300 border-slate-500/30', overdue: 'text-maroon-300 border-maroon-600/40' };
-const emptyForm = { month: '', fee_amount: '', payment_amount: '', payment_date: '', payment_note: '' };
+const statusStyles = { paid: 'text-brass-400 border-brass-500/30', pending: 'text-maroon-400 border-maroon-500/30', partially_paid: 'text-slate-300 border-slate-500/30' };
+const emptyForm = { programmeId: '', month: '', fee_amount: '', payment_amount: '', payment_date: '', payment_note: '' };
+const money = (value) => `Rs. ${Number(value || 0).toLocaleString('en-IN')}`;
 const displayDate = (value) => value ? new Date(`${value}T00:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Today';
 
 const AdminFees = () => {
   const { showToast } = useToast();
-  const [students, setStudents] = useState(null);
-  const [fees, setFees] = useState(null);
-  const [error, setError] = useState(false);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [form, setForm] = useState(emptyForm);
-  const [saving, setSaving] = useState(false);
-  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [programmes, setProgrammes] = useState([]); const [students, setStudents] = useState([]); const [fees, setFees] = useState(null); const [history, setHistory] = useState([]);
+  const [error, setError] = useState(false); const [selectedIds, setSelectedIds] = useState([]); const [form, setForm] = useState(emptyForm); const [saving, setSaving] = useState(false); const [confirmOpen, setConfirmOpen] = useState(false); const [activeHistory, setActiveHistory] = useState(null);
   const loadFees = () => adminService.getFees().then(({ data }) => setFees(data.data)).catch(() => setError(true));
-
-  useEffect(() => {
-    adminService.getStudents({ status: 'active' }).then(({ data }) => setStudents(data.data)).catch(() => setError(true));
-    loadFees();
-  }, []);
-  const requestSubmit = (event) => {
-    event.preventDefault();
-    if (!selectedIds.length || !form.month || form.fee_amount === '') return showToast('Students, month and fee amount are required.', 'error');
-    setConfirmOpen(true);
-  };
-  const handleSubmit = async () => {
-    setConfirmOpen(false);
-    setSaving(true);
-    try {
-      const { data } = await adminService.upsertFeesBulk({ studentIds: selectedIds, month: form.month, monthlyFeeAmount: Number(form.fee_amount), paymentReceivedNow: Number(form.payment_amount || 0), paymentDate: form.payment_date || undefined, paymentNote: form.payment_note || undefined });
-      const { updated = [], skipped = [], failed = [] } = data.data || {};
-      const details = [...skipped, ...failed].map((item) => `${item.studentName}: ${item.reason}`).join(' | ');
-      showToast(`Updated: ${updated.length} student${updated.length === 1 ? '' : 's'}.${details ? ` ${details}` : ''}`, failed.length ? 'error' : undefined);
-      setSelectedIds([]);
-      loadFees();
-    } catch (err) { showToast(err.response?.data?.message || 'Failed to save fee records.', 'error'); } finally { setSaving(false); }
-  };
-
-  return <AdminDashboardLayout>
-    <AdminPageHeader title="Fees" subtitle="One monthly fee record per student, with multiple payments supported." />
+  const loadHistory = () => adminService.getFeeHistory().then(({ data }) => setHistory(data.data || [])).catch(() => setError(true));
+  useEffect(() => { adminService.getProgramsAdmin().then(({ data }) => setProgrammes((data.data || []).filter((item) => item.status === 'active'))).catch(() => setError(true)); loadFees(); loadHistory(); }, []);
+  useEffect(() => { if (!form.programmeId) { setStudents([]); return; } setSelectedIds([]); adminService.getFeeStudentsByProgramme(form.programmeId).then(({ data }) => setStudents(data.data || [])).catch(() => { setStudents([]); showToast('Could not load enrolled students.', 'error'); }); }, [form.programmeId]);
+  const requestSubmit = (event) => { event.preventDefault(); if (!form.programmeId || !selectedIds.length || !form.month || form.fee_amount === '') return showToast('Programme, students, month and fee amount are required.', 'error'); setConfirmOpen(true); };
+  const submit = async () => { setConfirmOpen(false); setSaving(true); try { const { data } = await adminService.upsertFeesBulk({ studentIds: selectedIds, programmeId: form.programmeId, month: form.month, monthlyFeeAmount: Number(form.fee_amount), paymentReceivedNow: Number(form.payment_amount || 0), paymentDate: form.payment_date || undefined, paymentNote: form.payment_note || undefined }); const result = data.data || {}; const notices = [...(result.skipped || []), ...(result.failed || [])].map((item) => `${item.studentName}: ${item.reason}`).join(' | '); showToast(`Updated ${result.updated?.length || 0} student(s).${notices ? ` ${notices}` : ''}`, result.failed?.length ? 'error' : undefined); setSelectedIds([]); loadFees(); loadHistory(); } catch (err) { showToast(err.response?.data?.message || 'Failed to save fee records.', 'error'); } finally { setSaving(false); } };
+  const download = async (month) => { try { const response = await adminService.downloadFeeHistoryPdf(month); const url = URL.createObjectURL(response.data); const link = document.createElement('a'); link.href = url; link.download = `Kalai-Sangamam-Fee-History-${month.replace(/\s+/g, '-')}.pdf`; link.click(); URL.revokeObjectURL(url); } catch { showToast('Could not generate the monthly PDF.', 'error'); } };
+  return <AdminDashboardLayout><AdminPageHeader title="Fee Management" subtitle="One fee record per student, programme and month. Payments remain attached to that record." />
     {error && <ErrorState message="Couldn't load fee data right now." />}
-    <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-      <form onSubmit={requestSubmit} className="card p-6 space-y-4 h-fit">
-        <div><label className="text-xs text-slate-400 mb-1.5 block">Students</label><StudentMultiSelect students={students || []} selectedIds={selectedIds} onChange={setSelectedIds} /></div>
+    <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(300px,1fr)_minmax(0,1.7fr)]">
+      <form onSubmit={requestSubmit} className="card p-6 space-y-4 h-fit"><div><label className="text-xs text-slate-400 mb-1.5 block">Select Game / Programme</label><select required value={form.programmeId} onChange={(event) => setForm({ ...form, programmeId: event.target.value })}><option value="">Select programme...</option>{programmes.map((programme) => <option key={programme.id} value={programme.id}>{programme.name}</option>)}</select></div>
+        <div><label className="text-xs text-slate-400 mb-1.5 block">Students</label><StudentMultiSelect students={students} selectedIds={selectedIds} onChange={setSelectedIds} emptyMessage={form.programmeId ? 'No active students are enrolled in this programme.' : 'Select a programme first.'} /></div>
         <div><label className="text-xs text-slate-400 mb-1.5 block">Month (e.g. August 2026)</label><input required value={form.month} onChange={(event) => setForm({ ...form, month: event.target.value })} /></div>
         <div className="grid sm:grid-cols-2 gap-3"><div><label className="text-xs text-slate-400 mb-1.5 block">Monthly Fee Amount</label><input required min="0" type="number" value={form.fee_amount} onChange={(event) => setForm({ ...form, fee_amount: event.target.value })} /></div><div><label className="text-xs text-slate-400 mb-1.5 block">Payment Received Now</label><input min="0" type="number" value={form.payment_amount} onChange={(event) => setForm({ ...form, payment_amount: event.target.value })} /></div></div>
-        <div><label className="text-xs text-slate-400 mb-1.5 block">Payment Date</label><input type="date" value={form.payment_date} onChange={(event) => setForm({ ...form, payment_date: event.target.value })} /></div>
-        <div><label className="text-xs text-slate-400 mb-1.5 block">Payment Note (optional)</label><input value={form.payment_note} onChange={(event) => setForm({ ...form, payment_note: event.target.value })} /></div>
-        <p className="text-xs text-slate-500">Each selected student is processed independently. Existing monthly records retain their payment history.</p>
-        <button type="submit" disabled={saving} className="btn-primary w-full disabled:opacity-60">{saving ? 'Saving...' : 'Save Fee'}</button>
-      </form>
-      <div className="min-w-0"><p className="text-xs text-slate-500 uppercase tracking-wide mb-3">Monthly Fee Records</p>{fees && <DataTable tableClassName="min-w-[760px]" columns={[{ key: 'student_code', label: 'Student ID', render: (row) => row.students?.student_code || '-' }, { key: 'student', label: 'Student', render: (row) => row.students?.full_name || '-' }, { key: 'month', label: 'Month' }, { key: 'fee_amount', label: 'Fee', render: (row) => `Rs. ${row.fee_amount}` }, { key: 'paid_amount', label: 'Paid', render: (row) => `Rs. ${row.paid_amount}` }, { key: 'pending_amount', label: 'Balance', render: (row) => `Rs. ${row.pending_amount}` }, { key: 'payments', label: 'Payments', render: (row) => row.payments?.length || 0 }, { key: 'status', label: 'Status', render: (row) => <span className={`inline-flex whitespace-nowrap capitalize text-xs px-2.5 py-1 rounded-full border ${statusStyles[row.status]}`}>{row.status?.replace('_', ' ')}</span> }]} rows={fees} emptyMessage="No fee records yet." />}</div>
+        <div><label className="text-xs text-slate-400 mb-1.5 block">Payment Date</label><input type="date" value={form.payment_date} onChange={(event) => setForm({ ...form, payment_date: event.target.value })} /></div><div><label className="text-xs text-slate-400 mb-1.5 block">Payment Note (optional)</label><input value={form.payment_note} onChange={(event) => setForm({ ...form, payment_note: event.target.value })} /></div><p className="text-xs text-slate-500">A fully paid fee cannot receive another payment. Partial payments remain in the same programme-month record.</p><button type="submit" disabled={saving} className="btn-primary w-full disabled:opacity-60">{saving ? 'Saving...' : 'Save Payment'}</button></form>
+      <div className="min-w-0"><p className="text-xs text-slate-500 uppercase tracking-wide mb-3">Monthly Fee Records</p>{fees && <DataTable tableClassName="min-w-[900px]" columns={[{ key: 'student_code', label: 'Student ID', render: (row) => row.students?.student_code || '-' }, { key: 'student', label: 'Student', render: (row) => row.students?.full_name || '-' }, { key: 'programme', label: 'Game / Programme', render: (row) => row.programs?.name || 'Unassigned legacy record' }, { key: 'month', label: 'Month' }, { key: 'fee_amount', label: 'Fee', render: (row) => money(row.fee_amount) }, { key: 'paid_amount', label: 'Paid', render: (row) => money(row.paid_amount) }, { key: 'pending_amount', label: 'Balance', render: (row) => money(row.pending_amount) }, { key: 'payments', label: 'Payments', render: (row) => row.payments?.length || 0 }, { key: 'status', label: 'Status', render: (row) => <span className={`inline-flex whitespace-nowrap capitalize text-xs px-2.5 py-1 rounded-full border ${statusStyles[row.status] || statusStyles.pending}`}>{row.status?.replace('_', ' ')}</span> }]} rows={fees} emptyMessage="No fee records yet." />}</div>
     </div>
-    <ConfirmDialog open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={handleSubmit} title={`Apply Rs. ${form.payment_amount || 0} payment to ${selectedIds.length} student${selectedIds.length === 1 ? '' : 's'}?`} message={`Month: ${form.month}\nPayment date: ${displayDate(form.payment_date)}`} confirmLabel="Confirm" danger={false} />
+    <section className="mt-8"><p className="text-xs text-slate-500 uppercase tracking-wide mb-3">Monthly Fee History</p><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{history.map((item) => <article key={item.month} className="card p-5"><h2 className="font-display text-lg text-parchment-100">{item.month}</h2><p className="text-xs text-slate-500 mt-1">{item.total_students} students · {item.total_programmes} programmes · {item.total_transactions} transactions</p><div className="grid grid-cols-2 gap-3 my-4 text-sm"><span>Total Fee <b className="block text-parchment-100">{money(item.total_fee)}</b></span><span>Total Paid <b className="block text-brass-400">{money(item.total_paid)}</b></span><span>Balance <b className="block text-maroon-300">{money(item.total_balance)}</b></span></div><div className="flex gap-2"><button type="button" className="btn-secondary text-xs" onClick={() => setActiveHistory(item)}>View History</button><button type="button" className="btn-primary text-xs" onClick={() => download(item.month)}>Download PDF</button></div></article>)}{history.length === 0 && <p className="text-sm text-slate-500">Monthly history will appear here once fee records are created.</p>}</div></section>
+    <ConfirmDialog open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={submit} title={`Apply ${money(form.payment_amount)} payment to ${selectedIds.length} student${selectedIds.length === 1 ? '' : 's'}?`} message={`Month: ${form.month}\nPayment date: ${displayDate(form.payment_date)}`} confirmLabel="Confirm" danger={false} />
+    <Modal open={!!activeHistory} onClose={() => setActiveHistory(null)} title={activeHistory ? `${activeHistory.month} Fee History` : ''} maxWidth="max-w-6xl">{activeHistory && <div className="space-y-4"><p className="text-sm text-slate-400">{activeHistory.total_students} students · Total fee {money(activeHistory.total_fee)} · Paid {money(activeHistory.total_paid)} · Outstanding {money(activeHistory.total_balance)} · {activeHistory.total_transactions} transactions</p><DataTable tableClassName="min-w-[780px]" columns={[{ key: 'code', label: 'Student ID', render: (row) => row.students?.student_code || '-' }, { key: 'student', label: 'Student', render: (row) => row.students?.full_name || '-' }, { key: 'programme', label: 'Programme', render: (row) => row.programs?.name || 'Unassigned' }, { key: 'fee', label: 'Fee', render: (row) => money(row.fee_amount) }, { key: 'paid', label: 'Paid', render: (row) => money(row.paid_amount) }, { key: 'balance', label: 'Balance', render: (row) => money(row.pending_amount) }, { key: 'status', label: 'Status' }]} rows={activeHistory.fees} /></div>}</Modal>
   </AdminDashboardLayout>;
 };
-
 export default AdminFees;

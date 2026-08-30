@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FiAward } from 'react-icons/fi';
 import StudentDashboardLayout from '../../layouts/StudentDashboardLayout.jsx';
 import { EmptyState } from '../../components/common/StateViews.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { studentService } from '../../services/studentService';
 
 const StudentPrograms = () => {
-  const { profile } = useAuth();
+  const { profile, setProfile } = useAuth();
   const enrolled = profile?.student_programs || [];
+
+  useEffect(() => {
+    const refreshProfile = async () => {
+      try { const { data } = await studentService.getMyProfile(); setProfile(data.data); } catch { /* Retain the already-hydrated profile if refresh is unavailable. */ }
+    };
+    refreshProfile();
+    const refreshWhenVisible = () => { if (document.visibilityState === 'visible') refreshProfile(); };
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => document.removeEventListener('visibilitychange', refreshWhenVisible);
+  }, [setProfile]);
 
   return (
     <StudentDashboardLayout>

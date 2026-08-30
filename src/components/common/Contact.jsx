@@ -7,8 +7,8 @@ import { FiMapPin, FiPhone, FiMail, FiArrowRight } from 'react-icons/fi';
 const DEFAULT_BRANCH = {
   name: 'Main Branch',
   address: 'Dindigul, Tamil Nadu, India',
-  phone: '+91 00000 00000',
-  email: 'info@kalaisangamam.com',
+  phone: '+91 89730 13120',
+  email: 'kalaisangamamdgl@gmail.com',
   mapEmbedUrl: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d793.9458038325159!2d77.98182557616998!3d10.367722516243099!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b00abec39f95dab%3A0x66f43716e8303425!2sKalai%20Sangamam!5e1!3m2!1sen!2sin!4v1786606339142!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>',
 };
 

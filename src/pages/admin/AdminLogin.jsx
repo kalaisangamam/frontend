@@ -92,8 +92,12 @@ const AdminLogin = () => {
               {loading ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
+          <p className="mt-3 text-center text-xs text-slate-500">
+           Are you a Student? <Link to="/student/login" className="font-medium text-brass-400 transition-colors hover:text-brass-300 hover:underline">Login here</Link>
+          </p>
           </div>
         </div>
+        
       </main>
     </div>
   );

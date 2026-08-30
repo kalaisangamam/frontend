@@ -12,6 +12,7 @@ import AchievementsPage from './pages/public/AchievementsPage.jsx';
 import GalleryPage from './pages/public/GalleryPage.jsx';
 import EventsPage from './pages/public/EventsPage.jsx';
 import ContactPage from './pages/public/ContactPage.jsx';
+import DevelopersPage from './pages/public/DevelopersPage.jsx';
 import NotFound from './pages/public/NotFound.jsx';
 
 import StudentLogin from './pages/student/StudentLogin.jsx';
@@ -29,6 +30,7 @@ import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx';
 import AdminStudents from './pages/admin/AdminStudents.jsx';
 import AdminMasters from './pages/admin/AdminMasters.jsx';
 import AdminPrograms from './pages/admin/AdminPrograms.jsx';
+import AdminLevels from './pages/admin/AdminLevels.jsx';
 import AdminAchievements from './pages/admin/AdminAchievements.jsx';
 import AdminGallery from './pages/admin/AdminGallery.jsx';
 import AdminEvents from './pages/admin/AdminEvents.jsx';
@@ -163,6 +165,7 @@ function App() {
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/developers" element={<DevelopersPage />} />
 
         {/* Student */}
         <Route path="/student/login" element={<StudentLogin />} />
@@ -181,6 +184,7 @@ function App() {
         <Route path="/admin/students" element={<ProtectedRoute role="admin"><AdminStudents /></ProtectedRoute>} />
         <Route path="/admin/masters" element={<ProtectedRoute role="admin"><AdminMasters /></ProtectedRoute>} />
         <Route path="/admin/programs" element={<ProtectedRoute role="admin"><AdminPrograms /></ProtectedRoute>} />
+        <Route path="/admin/levels" element={<ProtectedRoute role="admin"><AdminLevels /></ProtectedRoute>} />
         <Route path="/admin/achievements" element={<ProtectedRoute role="admin"><AdminAchievements /></ProtectedRoute>} />
         <Route path="/admin/gallery" element={<ProtectedRoute role="admin"><AdminGallery /></ProtectedRoute>} />
         <Route path="/admin/events" element={<ProtectedRoute role="admin"><AdminEvents /></ProtectedRoute>} />
