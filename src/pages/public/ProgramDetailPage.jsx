@@ -153,7 +153,7 @@ const ProgramDetailPage = () => {
 
                   {program.levels?.length > 0 && (
                     <div className="mt-8 pt-7 border-t border-parchment-100/10">
-                      <p className="text-xs uppercase tracking-[0.22em] text-slate-500 mb-3">Levels / Belts</p>
+                      <p className="text-xs uppercase tracking-[0.22em] text-slate-500 mb-3">Levels / Belts / Achievements</p>
                       <div className="flex flex-wrap gap-2">
                         {program.levels.map((level) => (
                           <span

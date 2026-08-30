@@ -21,7 +21,7 @@ const StudentPrograms = () => {
 
   return (
     <StudentDashboardLayout>
-      <h1 className="section-heading !text-2xl lg:!text-3xl mb-1">My Programs &amp; Belt / Level</h1>
+      <h1 className="section-heading !text-2xl lg:!text-3xl mb-1">My Programs &amp; Belt / Level / Achievements</h1>
       <p className="text-slate-500 text-sm mb-8">Your current progress, updated by your masters.</p>
 
       {enrolled.length === 0 ? (

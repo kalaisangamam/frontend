@@ -9,7 +9,7 @@ const LINKS = [
   { to: '/student/profile', label: 'Profile', icon: FiUser },
   { to: '/student/attendance', label: 'Attendance', icon: FiCheckSquare },
   { to: '/student/fees', label: 'Fees', icon: FiCreditCard },
-  { to: '/student/programs', label: 'Programs / Belt', icon: FiAward },
+  { to: '/student/programs', label: 'Programs / Achievements', icon: FiAward },
   { to: '/student/testimonials', label: 'Testimonials', icon: FiMessageSquare },
   { to: '/student/settings', label: 'Settings', icon: FiSettings },
 ];
