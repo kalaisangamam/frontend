@@ -113,9 +113,14 @@ const AdminStudents = () => {
   const handleConfirm = async () => {
     if (!confirm) return;
     try {
-      if (confirm.type === 'remove') {
+      if (confirm.type === 'deactivate') {
         await adminService.deactivateStudent(confirm.id);
-        showToast('Student removed.');
+        showToast('Student deactivated.');
+        loadStudents();
+      }
+      if (confirm.type === 'activate') {
+        await adminService.activateStudent(confirm.id);
+        showToast('Student activated.');
         loadStudents();
       }
       if (confirm.type === 'delete') {
@@ -181,7 +186,11 @@ const AdminStudents = () => {
               actions={(row) => (
                 <>
                   <button onClick={() => openEdit(row)} className="text-brass-400 text-xs hover:underline">Edit</button>
-                  <button onClick={() => setConfirm({ type: 'remove', id: row.id })} className="text-maroon-400 text-xs hover:underline">Remove</button>
+                  {row.status === 'active' ? (
+                    <button onClick={() => setConfirm({ type: 'deactivate', id: row.id })} className="text-maroon-400 text-xs hover:underline">Deactivate</button>
+                  ) : (
+                    <button onClick={() => setConfirm({ type: 'activate', id: row.id })} className="text-brass-400 text-xs hover:underline">Activate</button>
+                  )}
                   <button onClick={() => setConfirm({ type: 'delete', id: row.id, name: row.full_name })} className="text-maroon-400 text-xs hover:underline">Delete</button>
                 </>
               )}
@@ -313,13 +322,15 @@ const confirmTitle = (confirm) => {
   if (confirm?.type === 'approve') return 'Approve Request';
   if (confirm?.type === 'reject') return 'Reject Request';
   if (confirm?.type === 'delete') return 'Delete Student Permanently?';
-  return 'Remove Student';
+  if (confirm?.type === 'activate') return 'Activate Student?';
+  return 'Deactivate Student?';
 };
 
 const confirmMessage = (confirm) => {
   if (confirm?.type === 'approve') return 'This will create an active student account from the request.';
   if (confirm?.type === 'reject') return 'This registration request will be rejected.';
   if (confirm?.type === 'delete') return 'This will permanently delete the student and their related records. This action cannot be undone.';
+  if (confirm?.type === 'activate') return 'This student will regain dashboard access and their login account will be re-enabled.';
   return 'This student will be marked inactive and lose dashboard access.';
 };
 
@@ -327,7 +338,8 @@ const confirmLabel = (confirm) => {
   if (confirm?.type === 'approve') return 'Approve';
   if (confirm?.type === 'reject') return 'Reject';
   if (confirm?.type === 'delete') return 'Delete Permanently';
-  return 'Remove';
+  if (confirm?.type === 'activate') return 'Activate';
+  return 'Deactivate';
 };
 
 export default AdminStudents;

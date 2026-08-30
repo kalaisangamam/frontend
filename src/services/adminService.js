@@ -15,6 +15,7 @@ export const adminService = {
   createStudent: (payload) => api.post('/students', payload),
   updateStudent: (id, payload) => api.put(`/students/${id}`, payload),
   deactivateStudent: (id) => api.delete(`/students/${id}`),
+  activateStudent: (id) => api.put(`/students/${id}`, { status: 'active' }),
   deleteStudent: (id) => api.delete(`/students/${id}/permanent`),
   assignProgram: (id, payload) => api.post(`/students/${id}/programs`, payload),
   getStudentRequests: (params) => api.get('/students/requests', { params }),
