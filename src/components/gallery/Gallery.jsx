@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiArrowRight, FiX, FiPlayCircle } from 'react-icons/fi';
+import { FiArrowRight, FiChevronLeft, FiChevronRight, FiX, FiPlayCircle } from 'react-icons/fi';
 import { HomeSectionLink, HOME_SECTIONS } from '../../utils/homeSectionNavigation.jsx';
 import SectionHeading from '../common/SectionHeading';
 import { SkeletonGrid, ErrorState, EmptyState } from '../common/StateViews';
@@ -46,6 +46,15 @@ const Gallery = ({ preview = false }) => {
   // A stable preview makes the home composition intentional and keeps every
   // item (including these seven) available on the full Gallery route.
   const previewItems = items?.slice(0, 7) || [];
+  const lightboxIndex = lightbox && items ? items.findIndex((item) => item.id === lightbox.id) : -1;
+  const showPrevious = () => {
+    if (!items?.length || lightboxIndex < 0) return;
+    setLightbox(items[(lightboxIndex - 1 + items.length) % items.length]);
+  };
+  const showNext = () => {
+    if (!items?.length || lightboxIndex < 0) return;
+    setLightbox(items[(lightboxIndex + 1) % items.length]);
+  };
 
   return (
     <section id="gallery" className="py-10">
@@ -119,6 +128,16 @@ const Gallery = ({ preview = false }) => {
             <button className="absolute top-6 right-6 text-parchment-100 text-2xl" onClick={() => setLightbox(null)}>
               <FiX />
             </button>
+            {items.length > 1 && (
+              <>
+                <button type="button" aria-label="Previous gallery item" onClick={(e) => { e.stopPropagation(); showPrevious(); }} className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-parchment-100/20 bg-ink-900/70 p-3 text-2xl text-parchment-100 transition-colors hover:border-brass-400 hover:text-brass-400 sm:left-8">
+                  <FiChevronLeft />
+                </button>
+                <button type="button" aria-label="Next gallery item" onClick={(e) => { e.stopPropagation(); showNext(); }} className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-parchment-100/20 bg-ink-900/70 p-3 text-2xl text-parchment-100 transition-colors hover:border-brass-400 hover:text-brass-400 sm:right-8">
+                  <FiChevronRight />
+                </button>
+              </>
+            )}
             <div className="max-h-[85vh] max-w-full" onClick={(e) => e.stopPropagation()}>
               {lightbox.media_type === 'video' ? (
                 <video src={lightbox.video_url} controls autoPlay className="max-h-[72vh] max-w-full rounded-md" />
