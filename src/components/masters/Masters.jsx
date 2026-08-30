@@ -201,7 +201,7 @@ const Masters = ({ limit, showViewAll = false, pageView = false }) => {
                   : "font-display text-2xl text-parchment-100"
               }
             >
-              Programme Masters
+              Programme Coaches
             </h2>
             <p className="mt-2 text-brass-400 font-display">
               Specialist coaches for every discipline
