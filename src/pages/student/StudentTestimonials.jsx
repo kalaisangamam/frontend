@@ -22,7 +22,7 @@ const StudentTestimonials = () => {
   const program = activePrograms.length ? activePrograms.join(', ') : 'Not assigned';
 
   useEffect(() => {
-    publicService.getTestimonials().then(({ data }) => setItems(data.data)).catch(() => setError(true));
+    publicService.getTestimonials().then(({ data }) => setItems(data.data.slice(0, 2))).catch(() => setError(true));
   }, []);
 
   const handleSubmit = async (event) => {
@@ -35,7 +35,7 @@ const StudentTestimonials = () => {
       setDesignation('');
       showToast('Thank you for sharing your testimonial.');
       const { data } = await publicService.getTestimonials();
-      setItems(data.data);
+      setItems(data.data.slice(0, 2));
     } catch (err) {
       showToast(err.response?.data?.message || 'Could not submit your testimonial.', 'error');
     } finally {

@@ -8,7 +8,7 @@ import { SkeletonGrid, ErrorState, EmptyState } from '../../components/common/St
 import { adminService } from '../../services/adminService';
 import { useToast } from '../../context/ToastContext.jsx';
 
-const emptyForm = { master_type: 'leadership', name: '', role: '', programme: '', specialization: '', experience_years: '', bio: '', display_order: 0, status: 'active' };
+const emptyForm = { master_type: 'programme', name: '', role: '', programme: 'Master', specialization: '', experience_years: '', bio: '', display_order: 0, status: 'active' };
 
 const AdminMasters = () => {
   const { showToast } = useToast();
@@ -25,7 +25,7 @@ const AdminMasters = () => {
   const load = () => adminService.getMastersAdmin().then(({ data }) => setMasters(data.data)).catch(() => setError(true));
   useEffect(() => { load(); }, []);
   const openCreate = () => { setEditing(null); setForm(emptyForm); setFile(null); setModalOpen(true); };
-  const openEdit = (master) => { setEditing(master); setForm({ ...emptyForm, ...master, master_type: master.master_type || 'programme', programme: master.programme || master.specialization || '' }); setFile(null); setModalOpen(true); };
+  const openEdit = (master) => { setEditing(master); setForm({ ...emptyForm, ...master, master_type: master.master_type || 'programme', programme: master.programme || 'Master' }); setFile(null); setModalOpen(true); };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +33,12 @@ const AdminMasters = () => {
     setSaving(true);
     try {
       const fd = new FormData();
-      Object.entries(form).forEach(([key, value]) => fd.append(key, value ?? ''));
+      const payload = {
+        ...form,
+        role: leadership ? form.role : (form.role || 'Master'),
+        programme: leadership ? '' : (form.programme || 'Master'),
+      };
+      Object.entries(payload).forEach(([key, value]) => fd.append(key, value ?? ''));
       if (leadership && file) fd.append('photo', file);
       if (editing) await adminService.updateMaster(editing.id, fd);
       else await adminService.createMaster(fd);
@@ -64,7 +69,7 @@ const AdminMasters = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <fieldset><legend className="text-xs text-slate-400 mb-2">Master Type</legend><div className="flex gap-5 text-sm text-parchment-100"><Radio label="Leadership" checked={leadership} onChange={() => setForm({ ...form, master_type: 'leadership' })} /><Radio label="Programme Master" checked={!leadership} onChange={() => { setFile(null); setForm({ ...form, master_type: 'programme' }); }} /></div></fieldset>
           <Field label="Name" value={form.name} onChange={(value) => setForm({ ...form, name: value })} required />
-          {leadership ? <><Field label="Role (Founder / Director / Head Coach)" value={form.role} onChange={(value) => setForm({ ...form, role: value })} required /><Field label="Specialization" value={form.specialization} onChange={(value) => setForm({ ...form, specialization: value })} /><Field label="Experience (years)" type="number" value={form.experience_years} onChange={(value) => setForm({ ...form, experience_years: value })} /><TextArea label="Short Professional Bio" value={form.bio} onChange={(value) => setForm({ ...form, bio: value })} /><div><label className="text-xs text-slate-400 mb-1.5 block">Profile Image {editing?.photo_url ? '(replace optional)' : ''}</label><input type="file" accept="image/*" required={!editing?.photo_url} onChange={(e) => setFile(e.target.files[0])} className="text-sm text-slate-300" /></div></> : <><Field label="Programme" value={form.programme} onChange={(value) => setForm({ ...form, programme: value, role: value ? `${value} Master` : '' })} required /><Field label="Specialization" value={form.specialization} onChange={(value) => setForm({ ...form, specialization: value })} required /><Field label="Experience (years)" type="number" value={form.experience_years} onChange={(value) => setForm({ ...form, experience_years: value })} /></>}
+          {leadership ? <><Field label="Role (Founder / Director / Head Coach)" value={form.role} onChange={(value) => setForm({ ...form, role: value })} required /><Field label="Specialization" value={form.specialization} onChange={(value) => setForm({ ...form, specialization: value })} /><Field label="Experience (years)" type="number" value={form.experience_years} onChange={(value) => setForm({ ...form, experience_years: value })} /><TextArea label="Short Professional Bio" value={form.bio} onChange={(value) => setForm({ ...form, bio: value })} /><div><label className="text-xs text-slate-400 mb-1.5 block">Profile Image {editing?.photo_url ? '(replace optional)' : ''}</label><input type="file" accept="image/*" required={!editing?.photo_url} onChange={(e) => setFile(e.target.files[0])} className="text-sm text-slate-300" /></div></> : <><Field label="Specialization" value={form.specialization} onChange={(value) => setForm({ ...form, specialization: value })} required /><Field label="Experience (years)" type="number" value={form.experience_years} onChange={(value) => setForm({ ...form, experience_years: value })} /></>}
           <Field label="Display Order" type="number" value={form.display_order} onChange={(value) => setForm({ ...form, display_order: value })} /><SelectField label="Status" value={form.status} onChange={(value) => setForm({ ...form, status: value })} />
           <button type="submit" disabled={saving} className="btn-primary w-full disabled:opacity-60">{saving ? 'Saving…' : editing ? 'Update Master' : 'Add Master'}</button>
         </form>
