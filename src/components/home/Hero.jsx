@@ -16,7 +16,7 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 import { publicService } from "../../services/publicService";
-import academyImage from "../../assets/images/hero/banner.jpg";
+import academyImage from "../../assets/images/hero/banner.png";
 
 // clipped-corner "premium frame" shape, used for the mobile floating badge only
 const FRAME_CLIP =
