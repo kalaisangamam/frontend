@@ -1425,133 +1425,39 @@ const Contact = () => {
         ====================================================== */
 
         .contact-page {
-          --contact-heading: #f5ece0;
-          --contact-body: #94a3b8;
-          --contact-muted: #64748b;
+          /* These aliases intentionally resolve through the one global theme
+             palette; this page must not maintain a second light/dark system. */
+          --contact-heading: rgb(var(--theme-foreground));
+          --contact-body: rgb(var(--theme-foreground-secondary));
+          --contact-muted: rgb(var(--theme-foreground-muted));
 
           --contact-card-bg:
             linear-gradient(
               145deg,
-              rgba(255,255,255,0.035),
-              rgba(255,255,255,0.012)
+              rgb(var(--theme-surface) / 0.98),
+              rgb(var(--theme-surface-raised) / 0.96)
             );
 
           --contact-card-border:
-            rgba(197,155,39,0.14);
+            rgb(var(--theme-border) / 0.12);
 
           --contact-input-bg:
-            rgba(0,0,0,0.22);
+            rgb(var(--theme-canvas) / 0.82);
 
           --contact-input-border:
-            rgba(245,236,224,0.1);
+            rgb(var(--theme-border) / 0.14);
 
           --contact-input-text:
-            #f5ece0;
+            rgb(var(--theme-foreground));
 
           --contact-input-placeholder:
-            #64748b;
+            rgb(var(--theme-foreground-muted));
 
           --contact-divider:
-            rgba(245,236,224,0.1);
+            rgb(var(--theme-border) / 0.12);
 
           --contact-shadow:
-            rgba(0,0,0,0.18);
-        }
-
-
-        /* =====================================================
-           LIGHT THEME
-        ====================================================== */
-
-        .light .contact-page,
-        [data-theme="light"] .contact-page,
-        html.light .contact-page,
-        body.light .contact-page {
-
-          --contact-heading:
-            #111827;
-
-          --contact-body:
-            #475569;
-
-          --contact-muted:
-            #64748b;
-
-          --contact-card-bg:
-            linear-gradient(
-              145deg,
-              rgba(255,255,255,0.98),
-              rgba(248,250,252,0.96)
-            );
-
-          --contact-card-border:
-            rgba(15,23,42,0.09);
-
-          --contact-input-bg:
-            rgba(15,23,42,0.025);
-
-          --contact-input-border:
-            rgba(15,23,42,0.11);
-
-          --contact-input-text:
-            #1e293b;
-
-          --contact-input-placeholder:
-            #94a3b8;
-
-          --contact-divider:
-            rgba(15,23,42,0.09);
-
-          --contact-shadow:
-            rgba(15,23,42,0.08);
-        }
-
-
-        /* =====================================================
-           DARK THEME
-        ====================================================== */
-
-        .dark .contact-page,
-        [data-theme="dark"] .contact-page,
-        html.dark .contact-page,
-        body.dark .contact-page {
-
-          --contact-heading:
-            #f5ece0;
-
-          --contact-body:
-            #94a3b8;
-
-          --contact-muted:
-            #64748b;
-
-          --contact-card-bg:
-            linear-gradient(
-              145deg,
-              rgba(255,255,255,0.035),
-              rgba(255,255,255,0.012)
-            );
-
-          --contact-card-border:
-            rgba(197,155,39,0.14);
-
-          --contact-input-bg:
-            rgba(0,0,0,0.22);
-
-          --contact-input-border:
-            rgba(245,236,224,0.1);
-
-          --contact-input-text:
-            #f5ece0;
-
-          --contact-input-placeholder:
-            #64748b;
-
-          --contact-divider:
-            rgba(245,236,224,0.1);
-
-          --contact-shadow:
-            rgba(0,0,0,0.18);
+            rgb(var(--theme-canvas) / 0.18);
         }
 
 
@@ -2053,17 +1959,8 @@ const Contact = () => {
 
 
         .contact-input option {
-          background: #111827;
-          color: #f5ece0;
-        }
-
-
-        .light .contact-input option,
-        [data-theme="light"] .contact-input option,
-        html.light .contact-input option,
-        body.light .contact-input option {
-          background: #ffffff;
-          color: #1e293b;
+          background: rgb(var(--theme-surface));
+          color: rgb(var(--theme-foreground));
         }
 
 

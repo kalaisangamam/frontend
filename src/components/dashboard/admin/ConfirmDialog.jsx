@@ -12,7 +12,7 @@ const ConfirmDialog = ({ open, onClose, onConfirm, title = 'Are you sure?', mess
         <button
           onClick={onConfirm}
           className={`flex-1 !py-2.5 rounded-sm font-display font-semibold uppercase tracking-wide text-sm ${
-            danger ? 'bg-maroon-600 hover:bg-maroon-500 text-parchment-100' : 'bg-brass-500 hover:bg-brass-400 text-onaccent'
+            danger ? 'bg-maroon-600 hover:bg-maroon-500 text-on-danger' : 'bg-brass-500 hover:bg-brass-400 text-onaccent'
           }`}
         >
           {confirmLabel}

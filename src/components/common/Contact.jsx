@@ -157,31 +157,33 @@ const CommonContact = ({
              Default = DARK THEME
           ------------------------------------------------ */
 
-          --cc-text-primary: #f5ece0;
-          --cc-text-secondary: #94a3b8;
-          --cc-text-muted: #64748b;
+          /* Resolve through the global semantic palette so the home contact
+             section follows the same runtime theme switch as every page. */
+          --cc-text-primary: rgb(var(--theme-foreground));
+          --cc-text-secondary: rgb(var(--theme-foreground-secondary));
+          --cc-text-muted: rgb(var(--theme-foreground-muted));
 
           --cc-card-bg:
             linear-gradient(
               145deg,
-              rgba(255, 255, 255, 0.035),
-              rgba(255, 255, 255, 0.012)
+              rgb(var(--theme-surface) / 0.98),
+              rgb(var(--theme-surface-raised) / 0.96)
             );
 
           --cc-card-border:
-            rgba(197, 155, 39, 0.14);
+            rgb(var(--theme-border) / 0.12);
 
           --cc-detail-bg:
-            rgba(255, 255, 255, 0.018);
+            rgb(var(--theme-surface-raised) / 0.5);
 
           --cc-detail-border:
-            rgba(255, 255, 255, 0.055);
+            rgb(var(--theme-border) / 0.1);
 
           --cc-map-border:
-            rgba(255, 255, 255, 0.08);
+            rgb(var(--theme-border) / 0.12);
 
           --cc-shadow:
-            rgba(0, 0, 0, 0.18);
+            rgb(var(--theme-canvas) / 0.18);
 
           overflow-x: hidden;
         }

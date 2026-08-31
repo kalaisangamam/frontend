@@ -60,7 +60,7 @@ const Programs = () => {
                 className="card overflow-hidden flex flex-col h-full"
               >
                 {/* IMAGE */}
-                <div className="h-52 overflow-hidden bg-white flex items-center justify-center">
+                <div className="h-52 overflow-hidden bg-ink-900 flex items-center justify-center">
                   <div className="w-full h-52 overflow-hidden">
                     <img
                       src={programImage(p.slug)}

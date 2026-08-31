@@ -52,6 +52,20 @@
     --master-stat: 31 25 19;
     --master-overlay: 10 8 6;
 
+    /* Semantic aliases. Keep component CSS tied to intent rather than a
+       particular dark/light palette value. These also remain correct inside
+       portal-specific palette scopes. */
+    --theme-canvas: var(--color-ink-950);
+    --theme-surface: var(--color-ink-900);
+    --theme-surface-raised: var(--color-ink-800);
+    --theme-foreground: var(--color-parchment-100);
+    --theme-foreground-secondary: var(--color-parchment-200);
+    --theme-foreground-muted: var(--color-parchment-300);
+    --theme-border: var(--color-parchment-100);
+    --theme-accent: var(--color-brass-500);
+    --theme-accent-strong: var(--color-brass-400);
+    --theme-overlay: var(--color-ink-950);
+
     color-scheme: dark;
   }
 
@@ -147,7 +161,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #C89B3C;
+    outline: 2px solid rgb(var(--theme-accent));
     outline-offset: 2px;
   }
 }
