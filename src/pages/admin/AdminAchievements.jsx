@@ -22,8 +22,8 @@ const AdminAchievements = createAdminCrudPage({
     { key: 'display_order', label: 'Display Order', type: 'number' },
   ],
   columns: [
-    { key: 'label', label: 'Label' },
-    { key: 'value', label: 'Value' },
+    // { key: 'label', label: 'Label' },
+    // { key: 'value', label: 'Value' },
     { key: 'type', label: 'Type' },
     { key: 'display_order', label: 'Order' },
   ],

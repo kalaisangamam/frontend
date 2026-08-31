@@ -90,6 +90,10 @@ const StudentRegister = () => {
               <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4">
                 <Field label="Username" value={form.username} onChange={(value) => updateField('username', value)} required />
                 <Field label="Password" type="password" value={form.password} onChange={(value) => updateField('password', value)} required />
+                <p className="sm:col-span-2 -mt-2 text-xs leading-relaxed text-slate-500">
+                  A username can be used again with a different password, and a password can be used again with a different username.
+                  The same username and password combination cannot be registered twice.
+                </p>
                 <Field label="Email" type="email" value={form.email} onChange={(value) => updateField('email', value)} />
                 <Field label="Full Name" value={form.full_name} onChange={(value) => updateField('full_name', value)} required />
                 <div className="sm:col-span-2">
