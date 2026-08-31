@@ -65,7 +65,7 @@ const EventQueueControls = ({
           onSelect((activeIndex - 1 + events.length) % events.length)
         }
         aria-label="Show previous event"
-        className="grid h-8 w-8 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
+        className="grid h-10 w-10 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
       >
         <FiChevronLeft />
       </button>
@@ -73,7 +73,7 @@ const EventQueueControls = ({
         type="button"
         onClick={() => onSelect((activeIndex + 1) % events.length)}
         aria-label="Show next event"
-        className="grid h-8 w-8 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
+        className="grid h-10 w-10 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
       >
         <FiChevronRight />
       </button>
@@ -252,8 +252,8 @@ const Hero = () => {
           >
             {/* Tamil display heading — negative tracking removed and line-height opened up,
                 since Tamil conjuncts/matras clip under tight latin-style leading/tracking */}
-            <h1 className="text-[1.35rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.25] tracking-[0.03em] text-parchment-100">
-              <span className="lg:hidden">
+            <h1 className="text-[1.8rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.2] tracking-[0.03em] text-parchment-100">
+              <span className="lg:hidden text-xl">
                 Tradition. <span className="text-brass-400">Discipline.</span>{" "}
                 Champions.
               </span>
@@ -338,16 +338,16 @@ const Hero = () => {
               </p>
             </div>
 
-            <div className="mt-9 flex flex-nowrap gap-3 sm:gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:gap-4">
               <button
                 onClick={navigateToPrograms}
-                className="btn-primary flex-1 whitespace-nowrap !px-3 text-xs sm:flex-none sm:!px-6 sm:text-sm"
+                className="btn-primary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
               >
                 Explore Programs <FiArrowRight />
               </button>
               <button
                 onClick={navigateToContact}
-                className="btn-secondary flex-1 whitespace-nowrap !px-3 text-xs sm:flex-none sm:!px-6 sm:text-sm"
+                className="btn-secondary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
               >
                 <FiPlayCircle /> Join a Class
               </button>

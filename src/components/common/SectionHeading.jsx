@@ -7,7 +7,7 @@ const SectionHeading = ({ eyebrow, title, subtitle, align = 'center' }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-80px' }}
     transition={{ duration: 0.5 }}
-    className={`max-w-2xl mb-12 ${align === 'center' ? 'mx-auto text-center' : ''}`}
+    className={`max-w-2xl mb-10 sm:mb-12 lg:mb-14 ${align === 'center' ? 'mx-auto text-center' : ''}`}
   >
     {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
     <h2 className="section-heading text-parchment-100">{title}</h2>

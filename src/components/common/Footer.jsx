@@ -23,11 +23,11 @@ const whatsappUrl = (value) => {
 };
 
 const Footer = ({ site }) => (
-  <footer className="border-t border-parchment-100/10 bg-ink-900/90 pt-16 pb-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <footer className="border-t border-parchment-100/10 bg-ink-900/90 pt-14 pb-8 sm:pt-16 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
     {/* =====================================================
         MAIN FOOTER
     ====================================================== */}
-    <div className="container-xl grid grid-cols-1 gap-10 md:grid-cols-4">
+    <div className="container-xl grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
       {/* =====================================================
           BRAND
       ====================================================== */}

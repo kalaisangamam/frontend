@@ -168,7 +168,7 @@
 
 @layer components {
   .container-xl {
-    @apply w-full max-w-[90rem] mx-auto px-4 sm:px-8 lg:px-10;
+    @apply w-full max-w-[80rem] mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .eyebrow {
@@ -176,7 +176,7 @@
   }
 
   .section-heading {
-    @apply text-[clamp(1.9rem,5vw,4.25rem)] leading-[1] font-display font-bold text-parchment-100;
+    @apply text-[clamp(2rem,4vw,3.5rem)] leading-[1.05] font-display font-bold text-parchment-100;
   }
 
   .btn-primary {
@@ -194,7 +194,12 @@
   }
 
   .card {
-    @apply bg-ink-900/90 border border-parchment-100/10 rounded-2xl transition-colors duration-300;
+    @apply bg-ink-900/90 border border-parchment-100/10 rounded-2xl transition-all duration-300 hover:border-brass-500/30;
+    box-shadow: 0 14px 36px -30px rgb(var(--theme-canvas) / 0.58);
+  }
+
+  .card:hover {
+    box-shadow: 0 22px 46px -30px rgb(var(--theme-canvas) / 0.68);
   }
 
   .master-card {

@@ -259,7 +259,7 @@ const Masters = ({ limit, showViewAll = false, pageView = false }) => {
       </section>
     );
   return (
-    <section id="masters" className="py-10">
+    <section id="masters" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl">
         <SectionHeading
           eyebrow="Our Masters"
