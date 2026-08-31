@@ -395,9 +395,9 @@ const StudentFees = () => {
                 RIGHT COLUMN - ONLINE PAYMENT
             ================================================== */}
             <div className="xl:sticky xl:top-6 h-fit">
-              <div className="rounded-2xl border border-parchment-100/10 bg-ink-800/70 shadow-lg shadow-black/10 overflow-hidden">
+              {/* <div className="rounded-2xl border border-parchment-100/10 bg-ink-800/70 shadow-lg shadow-black/10 overflow-hidden"> */}
                 {/* Payment Header */}
-                <div className="p-6 border-b border-parchment-100/10">
+                {/* <div className="p-6 border-b border-parchment-100/10">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-brass-500/10 border border-brass-500/20 flex items-center justify-center">
                       <FiCreditCard className="text-brass-400" size={18} />
@@ -413,12 +413,12 @@ const StudentFees = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Payment Content */}
-                <div className="p-6">
+                {/* <div className="p-6"> */}
                   {/* QR Code */}
-                  <div className="rounded-xl bg-white p-4 flex items-center justify-center mb-5">
+                  {/* <div className="rounded-xl bg-white p-4 flex items-center justify-center mb-5">
                     {payment?.upi_qr_url ? (
                       <img
                         src={payment.upi_qr_url}
@@ -430,10 +430,10 @@ const StudentFees = () => {
                         QR code not configured yet
                       </div>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* Scan Text */}
-                  <div className="text-center mb-6">
+                  {/* <div className="text-center mb-6">
                     <p className="text-sm text-parchment-200">
                       Scan QR Code to Pay
                     </p>
@@ -441,11 +441,11 @@ const StudentFees = () => {
                     <p className="text-[11px] text-slate-500 mt-1">
                       Use any supported UPI application
                     </p>
-                  </div>
+                  </div> */}
 
                   {/* Payment Details */}
-                  <div className="space-y-3">
-                    {payment?.payment_number && (
+                  {/* <div className="space-y-3"> */}
+                    {/* {payment?.payment_number && (
                       <div className="rounded-lg border border-parchment-100/10 bg-ink-900/40 px-4 py-3">
                         <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">
                           Payment Number
@@ -455,9 +455,9 @@ const StudentFees = () => {
                           {payment.payment_number}
                         </p>
                       </div>
-                    )}
+                    )} */}
 
-                    {payment?.upi_id && (
+                    {/* {payment?.upi_id && (
                       <div className="rounded-lg border border-parchment-100/10 bg-ink-900/40 px-4 py-3">
                         <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">
                           UPI ID
@@ -467,11 +467,11 @@ const StudentFees = () => {
                           {payment.upi_id}
                         </p>
                       </div>
-                    )}
-                  </div>
+                    )} */}
+                  {/* </div> */}
 
                   {/* Verification Notice */}
-                  <div className="mt-5 rounded-xl border border-brass-500/10 bg-brass-500/5 p-4">
+                  {/* <div className="mt-5 rounded-xl border border-brass-500/10 bg-brass-500/5 p-4">
                     <div className="flex gap-3">
                       <FiCheckCircle
                         className="text-brass-400 mt-0.5 shrink-0"
@@ -484,9 +484,9 @@ const StudentFees = () => {
                         monthly fee.
                       </p>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </div> */}
+                {/* </div> */}
+              {/* </div> */}
             </div>
           </div>
         )}
