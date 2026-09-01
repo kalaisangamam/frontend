@@ -51,7 +51,9 @@ const EventQueueControls = ({
 
   return (
     <div
-      className={`flex items-center ${compact ? "justify-between" : "justify-end"} gap-2`}
+      className={`flex items-center ${
+        compact ? "justify-between" : "justify-end"
+      } gap-2`}
     >
       {!compact && (
         <span className="mr-1 font-mono text-[0.62rem] tracking-[0.16em] text-parchment-300/45">
@@ -59,6 +61,7 @@ const EventQueueControls = ({
           {String(events.length).padStart(2, "0")}
         </span>
       )}
+
       <button
         type="button"
         onClick={() =>
@@ -69,6 +72,7 @@ const EventQueueControls = ({
       >
         <FiChevronLeft />
       </button>
+
       <button
         type="button"
         onClick={() => onSelect((activeIndex + 1) % events.length)}
@@ -82,7 +86,8 @@ const EventQueueControls = ({
 };
 
 const FlashNewsCard = ({ announcement }) => {
-  const isCommonNews = announcement.branch?.trim().toLowerCase() === "common";
+  const isCommonNews =
+    announcement.branch?.trim().toLowerCase() === "common";
 
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-brass-500/30 bg-ink-900/90 px-4 py-3 shadow-[0_16px_36px_-22px_rgba(224,133,50,0.85)] backdrop-blur-md">
@@ -92,6 +97,7 @@ const FlashNewsCard = ({ announcement }) => {
       >
         <FiZap aria-hidden="true" />
       </span>
+
       <div className="min-w-0 flex-1">
         {!isCommonNews && (
           <div className="mb-1.5 flex items-center gap-1.5 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-brass-400">
@@ -99,6 +105,7 @@ const FlashNewsCard = ({ announcement }) => {
             <span>{announcement.branch}</span>
           </div>
         )}
+
         <marquee
           className="block w-full text-sm leading-relaxed text-parchment-100"
           behavior="scroll"
@@ -115,6 +122,7 @@ const FlashNewsCard = ({ announcement }) => {
 
 const Hero = () => {
   const navigate = useNavigate();
+
   const [events, setEvents] = useState([]);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
   const [flashNews, setFlashNews] = useState(null);
@@ -122,7 +130,9 @@ const Hero = () => {
   useEffect(() => {
     publicService
       .getEvents()
-      .then(({ data }) => setEvents(Array.isArray(data.data) ? data.data : []))
+      .then(({ data }) =>
+        setEvents(Array.isArray(data.data) ? data.data : [])
+      )
       .catch(() => setEvents([]));
   }, []);
 
@@ -131,23 +141,36 @@ const Hero = () => {
       .getHeroAnnouncement()
       .then(({ data }) => {
         const announcement = data?.data;
+
         if (announcement) {
           setFlashNews({
             branch: announcement.branches?.name || "Common",
-            description: announcement.description || announcement.title,
+            description:
+              announcement.description || announcement.title,
           });
+
           return;
         }
+
         return publicService.getSiteSettings().then(({ data: settings }) => {
-          const description = String(settings?.data?.flash_news || "").trim();
-          setFlashNews(description ? { branch: "Common", description } : null);
+          const description = String(
+            settings?.data?.flash_news || ""
+          ).trim();
+
+          setFlashNews(
+            description
+              ? { branch: "Common", description }
+              : null
+          );
         });
       })
       .catch(() => setFlashNews(null));
   }, []);
 
   useEffect(() => {
-    if (activeEventIndex >= events.length) setActiveEventIndex(0);
+    if (activeEventIndex >= events.length) {
+      setActiveEventIndex(0);
+    }
   }, [activeEventIndex, events.length]);
 
   const heroEvent = events[activeEventIndex] || null;
@@ -164,13 +187,17 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-20 pb-16 lg:pt-20 lg:pr-12 lg:pb-0 overflow-hidden"
+      className="relative overflow-hidden pt-20 pb-16 lg:pt-20 lg:pr-12 lg:pb-0"
     >
       <div className="absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 w-[30rem] h-[30rem] bg-brass-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-40 -right-40 w-[26rem] h-[26rem] bg-maroon-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-brass-500/10 blur-3xl" />
+
+        <div className="absolute top-40 -right-40 h-[26rem] w-[26rem] rounded-full bg-maroon-500/10 blur-3xl" />
       </div>
 
+      {/* =========================================================
+          MOBILE FLASH NEWS
+      ========================================================== */}
       {flashNews && (
         <div className="mx-auto mb-4 w-[min(100%-2rem,34rem)] lg:hidden">
           <FlashNewsCard announcement={flashNews} />
@@ -178,14 +205,18 @@ const Hero = () => {
       )}
 
       <div className="relative lg:min-h-[42rem]">
+        {/* =======================================================
+            DESKTOP FLASH NEWS
+        ======================================================== */}
         {flashNews && (
           <div className="absolute left-1/2 top-0 z-30 hidden w-[min(34rem,calc(100%-3rem))] -translate-x-1/2 lg:block">
             <FlashNewsCard announcement={flashNews} />
           </div>
         )}
 
-        {/* DESKTOP ONLY: full-bleed banner image, flush to the viewport's right edge,
-            with the event info floating as an overlay card on top of it */}
+        {/* =======================================================
+            DESKTOP BANNER
+        ======================================================== */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -199,7 +230,8 @@ const Hero = () => {
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, transparent, black 16%)",
-              maskImage: "linear-gradient(to right, transparent, black 16%)",
+              maskImage:
+                "linear-gradient(to right, transparent, black 16%)",
             }}
           />
 
@@ -208,40 +240,53 @@ const Hero = () => {
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-brass-500/30 bg-brass-500/10 text-brass-500">
                 <FiCalendar />
               </span>
+
               <div className="min-w-0">
                 <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-brass-500">
-                  {heroEvent ? `Featured Event ${eventNumber}` : "Flash News"}
+                  {heroEvent
+                    ? `Featured Event ${eventNumber}`
+                    : "Flash News"}
                 </p>
+
                 <h4 className="mt-1 truncate font-display text-lg leading-tight text-parchment-100">
                   {heroEvent ? heroEvent.title : "No featured event"}
                 </h4>
+
                 <p className="mt-1 truncate text-xs text-parchment-300/60">
                   {heroEvent
-                    ? `${formatEventDate(heroEvent.event_date) || "Date to be announced"} \u2022 Dindigul`
+                    ? `${formatEventDate(heroEvent.event_date) || "Date to be announced"} • Dindigul`
                     : "Check back soon for upcoming academy updates."}
                 </p>
               </div>
             </div>
+
             <div className="flex shrink-0 items-center gap-2">
               <EventQueueControls
                 activeIndex={activeEventIndex}
                 events={events}
                 onSelect={setActiveEventIndex}
               />
+
               <button
                 onClick={() =>
                   navigate(
-                    heroEvent ? `/events#event-${heroEvent.id}` : "/events",
+                    heroEvent
+                      ? `/events#event-${heroEvent.id}`
+                      : "/events"
                   )
                 }
                 className="flex items-center gap-2 px-3 py-2 font-display text-sm font-semibold uppercase tracking-wide text-parchment-100 transition-colors hover:text-brass-400"
               >
-                View All Events <FiArrowRight className="text-brass-500" />
+                View All Events{" "}
+                <FiArrowRight className="text-brass-500" />
               </button>
             </div>
           </div>
         </motion.div>
 
+        {/* =======================================================
+            HERO CONTENT
+        ======================================================== */}
         <div className="container-xl relative z-10 lg:flex lg:h-full lg:min-h-[42rem] lg:items-center">
           {/* LEFT: hero text */}
           <motion.div
@@ -250,25 +295,32 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
             className="relative lg:w-[46%]"
           >
-            {/* Tamil display heading — negative tracking removed and line-height opened up,
-                since Tamil conjuncts/matras clip under tight latin-style leading/tracking */}
-            <h1 className="text-[1.8rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.2] tracking-[0.03em] text-parchment-100">
-              <span className="lg:hidden text-xl">
-                Tradition. <span className="text-brass-400">Discipline.</span>{" "}
+            {/* ===================================================
+                HEADING
+            ==================================================== */}
+            <h1 className="text-center font-display text-[1.8rem] font-bold leading-[1.2] tracking-[0.03em] text-parchment-100 sm:text-left sm:text-4xl lg:text-5xl xl:text-6xl">
+              <span className="text-xl lg:hidden">
+                Tradition.{" "}
+                <span className="text-brass-400">
+                  Discipline.
+                </span>{" "}
                 Champions.
               </span>
 
               <span className="hidden lg:inline">
                 Tradition.
                 <br />
-                <span className="text-brass-400">Discipline.</span>
+                <span className="text-brass-400">
+                  Discipline.
+                </span>
                 <br />
                 Champions.
               </span>
             </h1>
 
-            {/* On small screens the academy image receives its own stage instead of
-                competing with the heading. The desktop banner remains untouched. */}
+            {/* ===================================================
+                MOBILE HERO IMAGE
+            ==================================================== */}
             <motion.figure
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -300,62 +352,108 @@ const Hero = () => {
               />
             </motion.figure>
 
-            <p className="mt-3 font-display text-base sm:text-lg sm:text-left text-center font-semibold tracking-[0.03em] text-brass-400">
+            {/* ===================================================
+                TAGLINE
+            ==================================================== */}
+            <p className="mt-3 text-center font-display text-base font-semibold tracking-[0.03em] text-brass-400 sm:text-left sm:text-lg">
               Where Tradition Builds Champions.
             </p>
 
-            <p className="hidden mt-6 max-w-xl text-base leading-relaxed text-slate-300 text-justify lg:block lg:text-lg">
-              We blend tradition, disciplined training, and modern excellence to
-              build strength, focus, confidence, and character through Yoga,
-              Skating, Karate, Silambam, Archery & Hindi.
+            {/* ===================================================
+                DESKTOP DESCRIPTION
+            ==================================================== */}
+            <p className="mt-6 hidden max-w-xl text-justify text-base leading-relaxed text-slate-300 lg:block lg:text-lg">
+              We blend tradition, disciplined training, and modern
+              excellence to build strength, focus, confidence, and
+              character through Yoga, Skating, Karate, Silambam,
+              Archery & Hindi.
             </p>
 
-            {/* discipline tags with icons */}
-            {/* <div className="mt-8 flex flex-wrap gap-x-7 gap-y-4">
-              {DISCIPLINES.map(({ icon: Icon, label }) => (
-                <div
-                  key={label}
-                  className="flex w-14 flex-col items-center gap-2 text-center"
-                >
-                  <span className="grid h-9 w-9 place-items-center border border-brass-500/25 text-brass-500">
-                    <Icon className="text-base" />
-                  </span>
-                  <span className="text-[0.7rem] leading-none text-parchment-300/70">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div> */}
-
-            {/* short Tamil affirmation line, set apart with a brass rule above it */}
-            <div className="mt-0 sm:mt-4 sm:border-t border-brass-500/20 pt-6">
-              <p className="font-display text-base sm:text-lg leading-relaxed text-parchment-100">
+            {/* ===================================================
+                TAMIL AFFIRMATION
+            ==================================================== */}
+            <div className="mt-0 border-brass-500/20 pt-6 sm:mt-4 sm:border-t">
+              <p className="font-display text-base leading-relaxed text-parchment-100 sm:text-lg">
                 கலையை கற்று. ஒழுக்கத்தை வளர்த்து.
-                <br className="hidden sm:block" /> உன் வெற்றியை உருவாக்கு.
+                <br className="hidden sm:block" />
+                உன் வெற்றியை உருவாக்கு.
               </p>
+
               <p className="mt-2 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-brass-500/80">
                 Kalai Sangamam &mdash; TRAIN. DISCIPLINE. EXCEL.
               </p>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:gap-4">
+            {/* ===================================================
+                HERO CTA BUTTONS
+                MOBILE:
+                - Same row
+                - Equal width
+                - Smaller text
+                - Smaller padding
+                DESKTOP:
+                - Existing larger buttons
+            ==================================================== */}
+            <div className="mt-6 flex w-full flex-row gap-2 sm:mt-9 sm:gap-4">
+              {/* Explore Programs */}
               <button
+                type="button"
                 onClick={navigateToPrograms}
-                className="btn-primary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
+                className="
+                  btn-primary
+                  flex
+                  w-1/2
+                  items-center
+                  justify-center
+                  gap-1
+                  whitespace-nowrap
+                  !px-2
+                  !py-2.5
+                  text-[10px]
+                  leading-none
+                  sm:w-auto
+                  sm:flex-none
+                  sm:!px-6
+                  sm:!py-3
+                  sm:text-sm
+                "
               >
-                Explore Programs <FiArrowRight />
+                <span>Explore Programs</span>
+                <FiArrowRight className="shrink-0 text-xs sm:text-sm" />
               </button>
+
+              {/* Join a Class */}
               <button
+                type="button"
                 onClick={navigateToContact}
-                className="btn-secondary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
+                className="
+                  btn-secondary
+                  flex
+                  w-1/2
+                  items-center
+                  justify-center
+                  gap-1
+                  whitespace-nowrap
+                  !px-2
+                  !py-2.5
+                  text-[10px]
+                  leading-none
+                  sm:w-auto
+                  sm:flex-none
+                  sm:!px-6
+                  sm:!py-3
+                  sm:text-sm
+                "
               >
-                <FiPlayCircle /> Join a Class
+                <FiPlayCircle className="shrink-0 text-xs sm:text-sm" />
+                <span>Join a Class</span>
               </button>
             </div>
           </motion.div>
 
-          {/* MOBILE-ONLY event queue. It is driven by the same ordered public
-              event response as the events page, so additions/removals are automatic. */}
+          {/* =====================================================
+              MOBILE EVENT QUEUE
+          ====================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -404,6 +502,7 @@ const Hero = () => {
                     <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-parchment-300/65">
                       <div className="flex items-center gap-1.5">
                         <FiCalendar className="shrink-0 text-brass-500" />
+
                         <span>
                           {formatEventDate(heroEvent.event_date) ||
                             "Date to be announced"}
@@ -412,6 +511,7 @@ const Hero = () => {
 
                       <div className="flex items-center gap-1.5">
                         <FiMapPin className="shrink-0 text-brass-500" />
+
                         <span>Dindigul</span>
                       </div>
                     </div>
@@ -428,8 +528,11 @@ const Hero = () => {
                 </div>
 
                 <button
-                  onClick={() => navigate(`/events#event-${heroEvent.id}`)}
-                  className="w-full flex items-center justify-between pt-5 font-display text-sm font-semibold uppercase tracking-wide text-parchment-100 transition-colors hover:text-brass-400"
+                  type="button"
+                  onClick={() =>
+                    navigate(`/events#event-${heroEvent.id}`)
+                  }
+                  className="flex w-full items-center justify-between pt-5 font-display text-sm font-semibold uppercase tracking-wide text-parchment-100 transition-colors hover:text-brass-400"
                 >
                   <span>View Event</span>
                   <FiArrowRight className="text-brass-500" />
@@ -442,21 +545,26 @@ const Hero = () => {
                     <span className="h-1.5 w-1.5 rounded-full bg-brass-500 shadow-[0_0_12px_rgba(224,133,50,0.8)]" />
                     Featured Event
                   </span>
+
                   <span className="font-mono text-xs text-parchment-300/50">
                     01
                   </span>
                 </div>
+
                 <div className="grid gap-5 py-7 sm:grid-cols-[3.25rem_1fr]">
                   <span className="grid h-12 w-12 place-items-center border border-brass-500/25 text-brass-500">
                     <FiCalendar className="text-base" />
                   </span>
+
                   <div>
                     <p className="mb-3 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-parchment-300/55">
                       Flash News
                     </p>
+
                     <h3 className="font-display text-2xl leading-[1.05] text-parchment-100 lg:text-3xl">
                       No featured event
                     </h3>
+
                     <p className="mt-4 text-sm leading-relaxed text-parchment-300/60">
                       Check back soon for upcoming academy updates.
                     </p>
