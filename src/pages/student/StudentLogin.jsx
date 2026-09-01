@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import ThemeToggle from '../../components/common/ThemeToggle.jsx';
 
 const StudentLogin = () => {
-  const { login, logout } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
@@ -18,12 +18,7 @@ const StudentLogin = () => {
     setLoading(true);
     try {
       const user = await login(form.username, form.password);
-      if (user.role !== 'student') {
-        logout();
-        setError('This login is for students only.');
-        return;
-      }
-      navigate('/student/dashboard');
+      navigate(user.role === 'admin' ? '/admin/dashboard' : '/student/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid username or password.');
     } finally {
@@ -96,9 +91,6 @@ const StudentLogin = () => {
           </form>
           <p className="mt-6 text-center text-sm text-slate-500">
             New student? <Link to="/student/register" className="text-brass-400 hover:underline">Register here</Link>
-          </p>
-          <p className="mt-3 text-center text-xs text-slate-500">
-            Are you an administrator? <Link to="/admin/login" className="font-medium text-brass-400 transition-colors hover:text-brass-300 hover:underline">Login here</Link>
           </p>
           </div>
         </div>

@@ -41,7 +41,7 @@ const AdminDashboardLayout = ({ children }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    navigate('/student/login');
   };
 
   const SidebarContent = () => (

@@ -25,7 +25,6 @@ import StudentPrograms from './pages/student/StudentPrograms.jsx';
 import StudentTestimonials from './pages/student/StudentTestimonials.jsx';
 import StudentSettings from './pages/student/StudentSettings.jsx';
 
-import AdminLogin from './pages/admin/AdminLogin.jsx';
 import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx';
 import AdminStudents from './pages/admin/AdminStudents.jsx';
 import AdminMasters from './pages/admin/AdminMasters.jsx';
@@ -179,7 +178,6 @@ function App() {
         <Route path="/student/settings" element={<ProtectedRoute role="student"><StudentSettings /></ProtectedRoute>} />
 
         {/* Admin */}
-        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<ProtectedRoute role="admin"><AdminDashboardHome /></ProtectedRoute>} />
         <Route path="/admin/students" element={<ProtectedRoute role="admin"><AdminStudents /></ProtectedRoute>} />
         <Route path="/admin/masters" element={<ProtectedRoute role="admin"><AdminMasters /></ProtectedRoute>} />

@@ -10,6 +10,7 @@ import {
   FiMessageCircle,
 } from "react-icons/fi";
 import BrandIdentity from "./BrandIdentity.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 // MSME / Udyam Logo
 import msmeLogo from "../../assets/images/msme-logo.png";
@@ -22,8 +23,11 @@ const whatsappUrl = (value) => {
     : `https://wa.me/${value.replace(/\D/g, "")}`;
 };
 
-const Footer = ({ site }) => (
-  <footer className="border-t border-parchment-100/10 bg-ink-900/90 pt-16 pb-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+const Footer = ({ site }) => {
+  const { user } = useAuth();
+
+  return (
+    <footer className="border-t border-parchment-100/10 bg-ink-900/90 pt-16 pb-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
     {/* =====================================================
         MAIN FOOTER
     ====================================================== */}
@@ -199,22 +203,16 @@ const Footer = ({ site }) => (
           </li>
         </ul>
 
-        {/* Student / Admin Login */}
-        <div className="mt-5 flex gap-3">
-          <Link
-            to="/student/login"
-            className="text-xs text-brass-500 underline underline-offset-4 transition-colors hover:text-brass-400"
-          >
-            Student Login
-          </Link>
-
-          <Link
-            to="/admin/login"
-            className="text-xs text-slate-500 underline underline-offset-4 transition-colors hover:text-brass-400"
-          >
-            Admin Login
-          </Link>
-        </div>
+        {!user && (
+          <div className="mt-5">
+            <Link
+              to="/student/login"
+              className="text-xs text-brass-500 underline underline-offset-4 transition-colors hover:text-brass-400"
+            >
+              Student Login
+            </Link>
+          </div>
+        )}
       </div>
     </div>
 
@@ -264,7 +262,8 @@ const Footer = ({ site }) => (
 
       <p>Built for discipline, tradition and modern athletic excellence.</p>
     </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 export default Footer;
