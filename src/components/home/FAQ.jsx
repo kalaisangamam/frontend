@@ -18,7 +18,7 @@ const FAQ = () => {
   }, []);
 
   return (
-    <section id="faq" className="py-10 ">
+    <section id="faq" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl max-w-3xl">
         <SectionHeading eyebrow="FAQ" title="Common questions, answered" />
 
@@ -32,10 +32,10 @@ const FAQ = () => {
               <div key={f.id} className="card overflow-hidden">
                 <button
                   onClick={() => setOpenId(openId === f.id ? null : f.id)}
-                  className="w-full flex items-center justify-between p-5 text-left"
+                  className="flex min-h-14 w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6"
                 >
                   <span className="text-parchment-100 font-medium text-sm">{f.question}</span>
-                  <FiChevronDown className={`text-brass-500 transition-transform ${openId === f.id ? 'rotate-180' : ''}`} />
+                  <FiChevronDown className={`shrink-0 text-brass-500 transition-transform duration-200 ${openId === f.id ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
                   {openId === f.id && (

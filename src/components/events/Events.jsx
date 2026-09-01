@@ -36,7 +36,7 @@ const Events = ({ preview = false }) => {
   }, [events, targetId]);
 
   return (
-    <section id="events" className="py-10 ">
+    <section id="events" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl">
         <SectionHeading eyebrow="Upcoming Events" title="Belt tests, championships and camps" />
 

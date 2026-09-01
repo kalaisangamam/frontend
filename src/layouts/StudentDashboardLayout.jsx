@@ -78,9 +78,9 @@ const StudentDashboardLayout = ({ children }) => {
           <p className="font-display text-sm leading-tight text-parchment-100 sm:text-base">Kalai <span className="text-brass-500">Sangamam</span></p>
           <p className="mt-0.5 truncate text-[11px] uppercase tracking-wide text-slate-500">Student Portal</p>
         </div>
-        {/* <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <ThemeToggle className="!h-11 !w-11 text-lg" />
-        </div> */}
+        </div>
       </div>
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">

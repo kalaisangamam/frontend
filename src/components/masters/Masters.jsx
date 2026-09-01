@@ -55,7 +55,7 @@ const ProgrammeCard = ({ master, index }) => (
     className="master-card master-card--programme p-5 sm:p-6 text-left"
   >
     <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-brass-400">
-      Coaches
+      Coach
     </p>
     <span className="block h-px w-9 bg-brass-500/60 my-4" />
     <h3 className="font-display text-xl font-semibold text-parchment-100 leading-tight">
@@ -259,7 +259,7 @@ const Masters = ({ limit, showViewAll = false, pageView = false }) => {
       </section>
     );
   return (
-    <section id="masters" className="py-10">
+    <section id="masters" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl">
         <SectionHeading
           eyebrow="Our Masters"

@@ -31,7 +31,7 @@ const Achievements = ({ pageView = false }) => {
   const displayedStats = homeStats;
 
   return (
-    <section id="achievements" className="py-10">
+    <section id="achievements" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl">
         <SectionHeading
           eyebrow="Achievements"
@@ -43,13 +43,13 @@ const Achievements = ({ pageView = false }) => {
         {pageView && error && <ErrorState message="Couldn't load achievements right now." />}
         {displayedStats.length > 0 && (
           <>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 bg-ink-900 border-y border-parchment-100/5 py-7 sm:py-4">
+            <div className="grid overflow-hidden rounded-2xl border border-parchment-100/10 bg-ink-900 sm:grid-cols-2 lg:grid-cols-4">
               {displayedStats.map((s) => (
                 <AnimatedCounter
                   key={s.id}
                   value={s.value}
                   label={s.label}
-                  className="border-l border-parchment-100/15 px-7 py-6 sm:px-10 lg:px-7 xl:px-10 text-left"
+                  className="border-b border-parchment-100/10 px-6 py-7 text-center last:border-b-0 sm:px-8 sm:[&:nth-child(odd)]:border-r lg:border-b-0 lg:[&:not(:last-child)]:border-r lg:[&:nth-child(odd)]:border-r lg:text-left"
                 />
               ))}
             </div>
@@ -68,13 +68,13 @@ const Achievements = ({ pageView = false }) => {
             <div className="text-center mb-8">
               <p className="eyebrow">Additional Achievements</p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 bg-ink-900 border-y border-parchment-100/5 py-7 sm:py-10">
+            <div className="grid overflow-hidden rounded-2xl border border-parchment-100/10 bg-ink-900 sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((s) => (
                 <AnimatedCounter
                   key={s.id}
                   value={s.value}
                   label={s.label}
-                  className="border-l border-parchment-100/15 px-7 py-6 sm:px-10 lg:px-7 xl:px-10 text-left"
+                  className="border-b border-parchment-100/10 px-6 py-7 text-center last:border-b-0 sm:px-8 sm:[&:nth-child(odd)]:border-r lg:border-b-0 lg:[&:not(:last-child)]:border-r lg:[&:nth-child(odd)]:border-r lg:text-left"
                 />
               ))}
             </div>

@@ -16,7 +16,7 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 import { publicService } from "../../services/publicService";
-import academyImage from "../../assets/images/hero/banner.jpg";
+import academyImage from "../../assets/images/hero/banner.png";
 
 // clipped-corner "premium frame" shape, used for the mobile floating badge only
 const FRAME_CLIP =
@@ -65,7 +65,7 @@ const EventQueueControls = ({
           onSelect((activeIndex - 1 + events.length) % events.length)
         }
         aria-label="Show previous event"
-        className="grid h-8 w-8 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
+        className="grid h-10 w-10 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
       >
         <FiChevronLeft />
       </button>
@@ -73,7 +73,7 @@ const EventQueueControls = ({
         type="button"
         onClick={() => onSelect((activeIndex + 1) % events.length)}
         aria-label="Show next event"
-        className="grid h-8 w-8 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
+        className="grid h-10 w-10 place-items-center border border-parchment-100/15 text-parchment-300 transition hover:border-brass-500/60 hover:text-brass-400"
       >
         <FiChevronRight />
       </button>
@@ -203,7 +203,7 @@ const Hero = () => {
             }}
           />
 
-          <div className="absolute inset-x-6 bottom-6 z-10 flex items-center justify-between gap-6 rounded-2xl border border-white/10 bg-ink-900/80 p-5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.85)] backdrop-blur-md">
+          <div className="absolute inset-x-6 bottom-6 z-10 flex items-center justify-between gap-6 rounded-2xl border border-parchment-100/10 bg-ink-900/80 p-5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.85)] backdrop-blur-md">
             <div className="flex min-w-0 items-center gap-4">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-brass-500/30 bg-brass-500/10 text-brass-500">
                 <FiCalendar />
@@ -252,8 +252,8 @@ const Hero = () => {
           >
             {/* Tamil display heading — negative tracking removed and line-height opened up,
                 since Tamil conjuncts/matras clip under tight latin-style leading/tracking */}
-            <h1 className="text-[1.35rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.25] tracking-[0.03em] text-parchment-100">
-              <span className="lg:hidden">
+            <h1 className="text-[1.8rem] sm:text-4xl lg:text-5xl xl:text-6xl sm:text-left text-center font-display font-bold leading-[1.2] tracking-[0.03em] text-parchment-100">
+              <span className="lg:hidden text-xl">
                 Tradition. <span className="text-brass-400">Discipline.</span>{" "}
                 Champions.
               </span>
@@ -338,16 +338,16 @@ const Hero = () => {
               </p>
             </div>
 
-            <div className="mt-9 flex flex-nowrap gap-3 sm:gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:gap-4">
               <button
                 onClick={navigateToPrograms}
-                className="btn-primary flex-1 whitespace-nowrap !px-3 text-xs sm:flex-none sm:!px-6 sm:text-sm"
+                className="btn-primary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
               >
                 Explore Programs <FiArrowRight />
               </button>
               <button
                 onClick={navigateToContact}
-                className="btn-secondary flex-1 whitespace-nowrap !px-3 text-xs sm:flex-none sm:!px-6 sm:text-sm"
+                className="btn-secondary w-full whitespace-nowrap !px-3 text-xs sm:w-auto sm:flex-none sm:!px-6 sm:text-sm"
               >
                 <FiPlayCircle /> Join a Class
               </button>

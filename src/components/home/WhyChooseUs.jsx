@@ -27,7 +27,7 @@ const REASONS = [
 ];
 
 const WhyChooseUs = () => (
-  <section id="why-us" className="py-16 sm:py-20 lg:py-10">
+  <section id="why-us" className="py-14 sm:py-16 lg:py-20">
     <div className="container-xl">
       <SectionHeading
         eyebrow="Why Choose Us"

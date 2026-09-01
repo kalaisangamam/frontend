@@ -57,7 +57,7 @@ const Gallery = ({ preview = false }) => {
   };
 
   return (
-    <section id="gallery" className="py-10">
+    <section id="gallery" className="py-14 sm:py-16 lg:py-20">
       <div className="container-xl">
         <SectionHeading eyebrow="Gallery" title="Moments from the mat, the ring and the field" />
 
@@ -66,7 +66,7 @@ const Gallery = ({ preview = false }) => {
             <button
               key={c}
               onClick={() => setActive(c)}
-              className={`text-xs px-4 py-2 rounded-full border transition-colors ${
+              className={`min-h-10 text-xs px-4 py-2 rounded-full border transition-colors ${
                 active === c
                   ? 'bg-brass-500 text-onaccent border-brass-500 font-semibold'
                   : 'border-parchment-100/15 text-slate-400 hover:border-brass-500/40'

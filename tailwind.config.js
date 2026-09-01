@@ -44,6 +44,10 @@ export default {
         // Fixed (non-theming) near-black used as text on top of brass/gold
         // accents (buttons, active pills, badges) — stays readable in both themes.
         onaccent: '#15100b',
+        // Deep maroon is intentionally retained for destructive actions in
+        // both themes, so it needs a stable light foreground instead of the
+        // regular (theme-changing) body text token.
+        'on-danger': '#fffaf5',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
