@@ -6,6 +6,7 @@ import Modal from '../../components/dashboard/admin/Modal.jsx';
 import ConfirmDialog from '../../components/dashboard/admin/ConfirmDialog.jsx';
 import { SkeletonGrid, ErrorState } from '../../components/common/StateViews.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
+import ScheduleBuilder from './ScheduleBuilder.jsx';
 
 /**
  * Builds a full admin CRUD page (list + add/edit modal + delete confirm)
@@ -25,12 +26,13 @@ const createAdminCrudPage = ({ title, subtitle, fields, columns, service, emptyF
     const [form, setForm] = useState(emptyForm);
     const [confirmId, setConfirmId] = useState(null);
     const [saving, setSaving] = useState(false);
+    const [formError, setFormError] = useState('');
 
     const load = () => service.list().then(({ data }) => setRows(data.data)).catch(() => setError(true));
     useEffect(() => { load(); }, []);
 
-    const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
-    const openEdit = (row) => { setEditing(row); setForm({ ...emptyForm, ...row }); setModalOpen(true); };
+    const openCreate = () => { setEditing(null); setForm(emptyForm); setFormError(''); setModalOpen(true); };
+    const openEdit = (row) => { setEditing(row); setForm({ ...emptyForm, ...row, schedule: Array.isArray(row.schedule) ? row.schedule : [] }); setFormError(''); setModalOpen(true); };
 
     const handleChange = (key, value, type) => {
       setForm((f) => ({ ...f, [key]: type === 'tags' ? value.split(',').map((s) => s.trim()).filter(Boolean) : value }));
@@ -38,6 +40,11 @@ const createAdminCrudPage = ({ title, subtitle, fields, columns, service, emptyF
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      if (fields.some((field) => field.type === 'schedule') && form.schedule?.length) {
+        const invalid = form.schedule.some((entry) => !entry.branch?.trim() || !entry.days?.length || !entry.start_time || !entry.end_time || entry.start_time >= entry.end_time);
+        if (invalid) { setFormError('Complete each schedule: enter a branch, select a day, and set an end time later than the start time.'); return; }
+      }
+      setFormError('');
       setSaving(true);
       try {
         const payload = { ...form };
@@ -99,7 +106,9 @@ const createAdminCrudPage = ({ title, subtitle, fields, columns, service, emptyF
             {fields.map((f) => (
               <div key={f.key}>
                 <label className="text-xs text-slate-400 mb-1.5 block">{f.label}</label>
-                {f.type === 'textarea' ? (
+                {f.type === 'schedule' ? (
+                  <ScheduleBuilder value={form[f.key] || []} onChange={(value) => handleChange(f.key, value)} />
+                ) : f.type === 'textarea' ? (
                   <textarea
                     rows={3}
                     required={f.required}
@@ -128,6 +137,7 @@ const createAdminCrudPage = ({ title, subtitle, fields, columns, service, emptyF
                 )}
               </div>
             ))}
+            {formError && <p role="alert" className="text-sm text-rose-400">{formError}</p>}
             <button type="submit" disabled={saving} className="btn-primary w-full disabled:opacity-60">
               {saving ? 'Saving…' : editing ? 'Update' : 'Add'}
             </button>

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FiArrowLeft, FiCheckCircle, FiClock, FiLayers, FiAward, FiTarget } from 'react-icons/fi';
 import PublicLayout from '../../layouts/PublicLayout.jsx';
 import { publicService } from '../../services/publicService';
+import { formatScheduleDays, formatScheduleTime, groupScheduleByBranch } from '../../utils/programSchedule';
 
 const programImage = (slug) => new URL(`../../assets/images/programs/${slug}.jpg`, import.meta.url).href;
 
@@ -87,11 +88,28 @@ const ProgramDetailPage = () => {
                     />
                   </div>
 
-                  {(program.training_schedule || program.levels?.length > 0) && (
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {program.training_schedule && (
-                        <Meta icon={FiClock} label="Schedule" value={program.training_schedule} />
-                      )}
+                  {(program.schedule?.length > 0 || program.training_schedule || program.levels?.length > 0) && (
+                    <div className="space-y-3">
+                      {program.schedule?.length > 0 ? (
+                        <section className="card p-5 sm:p-6" aria-label="Training schedule">
+                          <SectionLabel icon={FiClock}>Schedule</SectionLabel>
+                          <div className="space-y-4">
+                            {groupScheduleByBranch(program.schedule).map(({ branch, schedules }) => (
+                              <div key={branch} className="rounded-xl border border-parchment-100/10 bg-ink-950/30 p-4">
+                                <h2 className="mb-3 font-display text-lg text-parchment-100">{branch}</h2>
+                                <div className="space-y-3">
+                                  {schedules.map((entry, index) => (
+                                    <div key={`${entry.start_time}-${index}`} className="flex flex-col gap-1 border-t border-parchment-100/10 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                                      <span className="text-sm text-slate-300">{formatScheduleDays(entry.days)}</span>
+                                      <span className="whitespace-nowrap text-sm font-medium text-brass-400">{formatScheduleTime(entry.start_time)} – {formatScheduleTime(entry.end_time)}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      ) : program.training_schedule ? <Meta icon={FiClock} label="Schedule" value={program.training_schedule} /> : null}
                       {program.levels?.length > 0 && (
                         <Meta
                           icon={FiAward}

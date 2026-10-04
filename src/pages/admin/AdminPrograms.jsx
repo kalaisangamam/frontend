@@ -13,7 +13,7 @@ const AdminPrograms = createAdminCrudPage({
   subtitle: 'Silambam, Karate, Yoga, Skating, Archery, Hindi and their training details.',
   service,
   emptyForm: {
-    slug: '', name: '', tagline: '', introduction: '', training_details: '', training_schedule: '',
+    slug: '', name: '', tagline: '', introduction: '', training_details: '', training_schedule: '', schedule: [],
     benefits: [], levels: [], display_order: 0,
   },
   fields: [
@@ -23,7 +23,7 @@ const AdminPrograms = createAdminCrudPage({
     { key: 'introduction', label: 'Introduction', type: 'textarea' },
     { key: 'benefits', label: 'Benefits', type: 'tags' },
     { key: 'training_details', label: 'Training Details', type: 'textarea' },
-    { key: 'training_schedule', label: 'Training Schedule', type: 'textarea' },
+    { key: 'schedule', label: 'Training Schedule', type: 'schedule' },
     { key: 'levels', label: 'Levels / Belts', type: 'tags' },
     { key: 'display_order', label: 'Display Order', type: 'number' },
   ],
