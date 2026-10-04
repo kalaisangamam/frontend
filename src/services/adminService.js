@@ -44,6 +44,12 @@ export const adminService = {
   updateAchievement: (id, payload) => api.put(`/achievements/${id}`, payload),
   deleteAchievement: (id) => api.delete(`/achievements/${id}`),
 
+  // Student achievements
+  getStudentAchievementsAdmin: (params) => api.get('/student-achievements', { params }),
+  createStudentAchievement: (payload) => api.post('/student-achievements', payload),
+  updateStudentAchievement: (id, payload) => api.put(`/student-achievements/${id}`, payload),
+  deleteStudentAchievement: (id) => api.delete(`/student-achievements/${id}`),
+
   // Gallery
   getGalleryAdmin: () => api.get('/gallery/admin'),
   createGalleryItem: (formData) => api.post('/gallery', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),

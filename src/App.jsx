@@ -31,6 +31,7 @@ import AdminMasters from './pages/admin/AdminMasters.jsx';
 import AdminPrograms from './pages/admin/AdminPrograms.jsx';
 import AdminLevels from './pages/admin/AdminLevels.jsx';
 import AdminAchievements from './pages/admin/AdminAchievements.jsx';
+import AdminStudentAchievements from './pages/admin/AdminStudentAchievements.jsx';
 import AdminGallery from './pages/admin/AdminGallery.jsx';
 import AdminEvents from './pages/admin/AdminEvents.jsx';
 import AdminTestimonials from './pages/admin/AdminTestimonials.jsx';
@@ -184,6 +185,7 @@ function App() {
         <Route path="/admin/programs" element={<ProtectedRoute role="admin"><AdminPrograms /></ProtectedRoute>} />
         <Route path="/admin/levels" element={<ProtectedRoute role="admin"><AdminLevels /></ProtectedRoute>} />
         <Route path="/admin/achievements" element={<ProtectedRoute role="admin"><AdminAchievements /></ProtectedRoute>} />
+        <Route path="/admin/student-achievements" element={<ProtectedRoute role="admin"><AdminStudentAchievements /></ProtectedRoute>} />
         <Route path="/admin/gallery" element={<ProtectedRoute role="admin"><AdminGallery /></ProtectedRoute>} />
         <Route path="/admin/events" element={<ProtectedRoute role="admin"><AdminEvents /></ProtectedRoute>} />
         <Route path="/admin/announcements" element={<ProtectedRoute role="admin"><AdminAnnouncements /></ProtectedRoute>} />
