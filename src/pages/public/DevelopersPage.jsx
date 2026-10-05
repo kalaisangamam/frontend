@@ -21,7 +21,7 @@ const DEVELOPERS = [
     image: manojKumarImage,
     email: 'kumarvmanoj329@gmail.com',
     phone: '+91 9500885468',
-    instagram: 'https://instagram.com/',
+    instagram: 'https://www.instagram.com/_manoj.vj__?stkn=MTlsNGI5bW1pNWZrNg==',
     portfolio: 'https://mkv-portfolio.vercel.app/',
   },
   {
@@ -30,7 +30,7 @@ const DEVELOPERS = [
     image: kishorKumarImage,
     email: 'pskishor196@gmail.com',
     phone: '+91 9659844778',
-    instagram: 'https://instagram.com/',
+    instagram: 'https://www.instagram.com/_kishor_ps?stkn=czQ2dTY5ODE3dnN0',
     portfolio: 'https://kishors-portfolio.vercel.app/',
   },
 ];
