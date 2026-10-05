@@ -10,12 +10,15 @@ import {
 } from 'react-icons/fi';
 import PublicLayout from '../../layouts/PublicLayout.jsx';
 
+// Local developer images
+import manojKumarImage from '../../assets/images/Manoj.png';
+import kishorKumarImage from '../../assets/images/kishor.jpeg';
+
 const DEVELOPERS = [
   {
     name: 'Manoj Kumar V',
     roles: ['Full-Stack Developer', 'Data Analyst'],
-    image:
-      'https://drive.google.com/thumbnail?id=11ntCK6SSbN5Ys6xOpYieH3YapVzc8v2e&sz=w1000',
+    image: manojKumarImage,
     email: 'kumarvmanoj329@gmail.com',
     phone: '+91 9500885468',
     instagram: 'https://instagram.com/',
@@ -24,8 +27,7 @@ const DEVELOPERS = [
   {
     name: 'Kishor Kumar S',
     roles: ['Full-Stack Developer', 'DevOps Engineer'],
-    image:
-      'https://drive.google.com/thumbnail?id=1psVskDl8NfSDZo1wBy1mWRmz3HojEwnl&sz=w1000',
+    image: kishorKumarImage,
     email: 'pskishor196@gmail.com',
     phone: '+91 9659844778',
     instagram: 'https://instagram.com/',
@@ -95,9 +97,6 @@ const DeveloperCard = ({ developer, index }) => (
   >
     {/* ============================================================
         IMAGE AREA
-
-        Portrait ratio gives the developer image much better
-        presence without making the whole card unnecessarily wide.
     ============================================================ */}
 
     <div
