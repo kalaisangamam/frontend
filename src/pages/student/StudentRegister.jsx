@@ -1,3 +1,4 @@
+import StudentFamilyFields, { emptyStudentFamily } from '../../components/common/StudentFamilyFields.jsx';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft, FiCheckCircle } from 'react-icons/fi';
@@ -6,7 +7,7 @@ import { publicService } from '../../services/publicService';
 
 const emptyForm = {
   username: '', password: '', email: '', full_name: '', date_of_birth: '',
-  gender: '', parent_name: '', parent_contact: '', contact_number: '',
+  gender: '', ...emptyStudentFamily, contact_number: '',
   address: '', blood_group: '', emergency_contact: '', joining_date: '', program_id: '', program_ids: [],
 };
 
@@ -114,8 +115,7 @@ const StudentRegister = () => {
                 </div>
                 <Field label="Date of Birth" type="date" value={form.date_of_birth} onChange={(value) => updateField('date_of_birth', value)} />
                 <Field label="Gender" value={form.gender} onChange={(value) => updateField('gender', value)} />
-                <Field label="Parent Name" value={form.parent_name} onChange={(value) => updateField('parent_name', value)} />
-                <Field label="Parent Contact" value={form.parent_contact} onChange={(value) => updateField('parent_contact', value)} />
+                <StudentFamilyFields form={form} onChange={updateField} />
                 <Field label="Contact Number" value={form.contact_number} onChange={(value) => updateField('contact_number', value)} />
                 <Field label="Blood Group" value={form.blood_group} onChange={(value) => updateField('blood_group', value)} />
                 <Field label="Emergency Contact" value={form.emergency_contact} onChange={(value) => updateField('emergency_contact', value)} />

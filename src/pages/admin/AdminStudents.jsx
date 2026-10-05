@@ -1,3 +1,4 @@
+import StudentFamilyFields, { emptyStudentFamily } from '../../components/common/StudentFamilyFields.jsx';
 import React, { useEffect, useState } from 'react';
 import AdminDashboardLayout from '../../layouts/AdminDashboardLayout.jsx';
 import AdminPageHeader from '../../components/dashboard/admin/AdminPageHeader.jsx';
@@ -11,7 +12,7 @@ import { useToast } from '../../context/ToastContext.jsx';
 
 const emptyForm = {
   username: '', password: '', email: '', full_name: '', date_of_birth: '',
-  gender: '', parent_name: '', parent_contact: '', contact_number: '',
+  gender: '', ...emptyStudentFamily, contact_number: '',
   address: '', blood_group: '', emergency_contact: '', joining_date: '', program_id: '', program_ids: [],
 };
 
@@ -211,7 +212,14 @@ const AdminStudents = () => {
                 { key: 'full_name', label: 'Name' },
                 { key: 'username', label: 'Username' },
                 { key: 'contact_number', label: 'Contact' },
-                { key: 'parent_name', label: 'Parent' },
+                { key: 'category', label: 'Category' },
+                { key: 'school_college', label: 'School / College' },
+                { key: 'father_name', label: 'Father' },
+                { key: 'father_contact', label: 'Father Contact' },
+                { key: 'father_occupation', label: 'Father Occupation' },
+                { key: 'mother_name', label: 'Mother' },
+                { key: 'mother_contact', label: 'Mother Contact' },
+                { key: 'mother_occupation', label: 'Mother Occupation' },
               ]}
               rows={requests}
               emptyMessage="No pending registration requests."
@@ -240,8 +248,7 @@ const AdminStudents = () => {
           
           <Field label="Date of Birth" type="date" value={form.date_of_birth} onChange={(value) => setForm({ ...form, date_of_birth: value })} />
           <Field label="Gender" value={form.gender} onChange={(value) => setForm({ ...form, gender: value })} />
-          <Field label="Parent Name" value={form.parent_name} onChange={(value) => setForm({ ...form, parent_name: value })} />
-          <Field label="Parent Contact" value={form.parent_contact} onChange={(value) => setForm({ ...form, parent_contact: value })} />
+          <StudentFamilyFields form={form} onChange={(field, value) => setForm((current) => ({ ...current, [field]: value }))} />
           
           <Field label="Blood Group" value={form.blood_group} onChange={(value) => setForm({ ...form, blood_group: value })} />
           {/* <Field label="Emergency Contact" value={form.emergency_contact} onChange={(value) => setForm({ ...form, emergency_contact: value })} /> */}

@@ -72,14 +72,22 @@ const StudentProfile = () => {
       <div className="card grid gap-x-8 gap-y-7 p-5 sm:grid-cols-2 sm:p-7">
         <ProfileSection title="Personal Information">
           <InfoItem icon={User} label="Full Name" value={profile?.full_name} />
+          <InfoItem icon={Users} label="Category" value={profile?.category} />
+          <InfoItem icon={Users} label="School / College" value={profile?.school_college} />
           <InfoItem icon={Cake} label="Date of Birth" value={profile?.date_of_birth} />
           <InfoItem icon={Droplet} label="Blood Group" value={profile?.blood_group} />
           <InfoItem icon={IdCard} label="Student ID" value={profile?.student_code} />
         </ProfileSection>
 
-        <ProfileSection title="Parent / Guardian">
-          <InfoItem icon={Users} label="Parent Name" value={profile?.parent_name} />
-          <InfoItem icon={Phone} label="Parent Contact" value={profile?.parent_contact} />
+        <ProfileSection title="Family Information">
+          <InfoItem icon={Users} label="Father Name" value={profile?.father_name} />
+          <InfoItem icon={Phone} label="Father Contact Number" value={profile?.father_contact} />
+          <InfoItem icon={Users} label="Father Occupation" value={profile?.father_occupation} />
+          <InfoItem icon={Users} label="Mother Name" value={profile?.mother_name} />
+          <InfoItem icon={Phone} label="Mother Contact Number" value={profile?.mother_contact} />
+          <InfoItem icon={Users} label="Mother Occupation" value={profile?.mother_occupation} />
+          {profile?.parent_name && <InfoItem icon={Users} label="Previous Parent / Guardian Name" value={profile.parent_name} />}
+          {profile?.parent_contact && <InfoItem icon={Phone} label="Previous Parent / Guardian Contact" value={profile.parent_contact} />}
         </ProfileSection>
 
         <ProfileSection title="Contact Information">
